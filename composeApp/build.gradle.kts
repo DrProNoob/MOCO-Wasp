@@ -107,6 +107,13 @@ dependencies {
 
     // Room
     add("kspCommonMainMetadata", libs.room.compiler)
+    // permission
+    commonMainApi(libs.permissions)
+
+    // compose multiplatform
+    commonMainApi(libs.permissions.compose) // permissions api + compose extensions
+
+    commonTestImplementation(libs.permissions.test)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
