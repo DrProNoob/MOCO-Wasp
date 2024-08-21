@@ -35,6 +35,18 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            //Koin
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
+            //Camera
+            // CameraX core library
+            implementation (libs.androidx.camera.core)
+            // CameraX Camera2 implementation
+            implementation (libs.androidx.camera.camera2)
+            // CameraX Lifecycle library
+            implementation (libs.androidx.camera.lifecycle)
+            // CameraX View library
+            implementation (libs.androidx.camera.view)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -58,6 +70,8 @@ kotlin {
             //Room
             implementation(libs.room.runtime)
             implementation(libs.sqlite.bundled)
+            //Permissions
+            implementation(libs.calf.permissions)
         }
     }
 }
@@ -105,6 +119,8 @@ room {
 
 dependencies {
 
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
     // Room
     add("kspCommonMainMetadata", libs.room.compiler)
     // permission

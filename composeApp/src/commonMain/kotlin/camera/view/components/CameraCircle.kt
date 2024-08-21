@@ -14,21 +14,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import mocowasp.composeapp.generated.resources.Res
 import mocowasp.composeapp.generated.resources.bolt
 import mocowasp.composeapp.generated.resources.camera_circle
 import mocowasp.composeapp.generated.resources.change_camera
-import mocowasp.composeapp.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
-fun CameraCircle(
-) {
+fun CameraCircle(navController: NavHostController) {
     Scaffold(
     ) {
         paddingValues -> CameraCircleContent(
@@ -47,6 +44,11 @@ private fun CameraCircleContent(
             .fillMaxSize()
             .padding(paddingValues),
     ) {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            CameraPreview()
+        }
         Row(
             modifier = Modifier.align(Alignment.BottomCenter)
                 .fillMaxWidth()
