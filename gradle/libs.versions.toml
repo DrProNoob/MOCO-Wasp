@@ -1,5 +1,5 @@
 [versions]
-agp = "8.2.2"
+agp = "8.5.2"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
@@ -11,9 +11,9 @@ androidx-espresso-core = "3.6.1"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
 calfPermissions = "0.5.4"
-compose-plugin = "1.6.11"
+compose-plugin = "1.6.10"
 junit = "4.13.2"
-kotlin = "2.0.0"
+kotlin = "2.0.20"
 
 koin = "3.6.0-Beta4"
 koinComposeMultiplatform = "1.2.0-Beta4"
@@ -21,12 +21,14 @@ navigationCompose = "2.8.0-alpha08"
 lifecycleViewModel = "2.8.4"
 ktor-client = "2.3.7"
 
+peekabooUi = "0.5.2"
 permissions = "0.18.0"
 room = "2.7.0-alpha01"
-ksp = "2.0.0-1.0.24"
+ksp = "2.0.20-1.0.24"
 sqlite = "2.5.0-SNAPSHOT"
 cameraLifecycle = "1.3.4"
 cameraView = "1.3.4"
+runtimeSaveableAndroid = "1.6.8"
 
 [libraries]
 androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraLifecycle" }
@@ -59,6 +61,7 @@ koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinComp
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koinComposeMultiplatform" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 
+peekaboo-ui = { module = "io.github.onseok:peekaboo-ui", version.ref = "peekabooUi" }
 permissions = { module = "dev.icerock.moko:permissions", version.ref = "permissions" }
 permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "permissions" }
 permissions-test = { module = "dev.icerock.moko:permissions-test", version.ref = "permissions" }
@@ -68,6 +71,7 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraLifecycle" }
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraView" }
+androidx-runtime-saveable-android = { group = "androidx.compose.runtime", name = "runtime-saveable-android", version.ref = "runtimeSaveableAndroid" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

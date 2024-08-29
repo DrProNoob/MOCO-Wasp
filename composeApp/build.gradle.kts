@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidApplication)	
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
@@ -72,6 +72,8 @@ kotlin {
             implementation(libs.sqlite.bundled)
             //Permissions
             implementation(libs.calf.permissions)
+            // peekaboo-ui
+            implementation(libs.peekaboo.ui)
         }
     }
 }
@@ -121,6 +123,7 @@ dependencies {
 
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.runtime.saveable.android)
     // Room
     add("kspCommonMainMetadata", libs.room.compiler)
     // permission

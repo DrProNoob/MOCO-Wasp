@@ -20,46 +20,20 @@ import mocowasp.composeapp.generated.resources.Res
 import mocowasp.composeapp.generated.resources.bolt
 import mocowasp.composeapp.generated.resources.camera_circle
 import mocowasp.composeapp.generated.resources.change_camera
+import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
 fun CameraCircle(navController: NavHostController) {
-    Scaffold(
-    ) {
-        paddingValues -> CameraCircleContent(
-            paddingValues = paddingValues
-        )
-    }
+
 
 }
 
-@Composable
-private fun CameraCircleContent(
-    paddingValues: PaddingValues
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues),
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            CameraPreview()
-        }
-        Row(
-            modifier = Modifier.align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .padding(paddingValues),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            CameraCircleContentBottomRow()
-        }
-    }
-}
 
+
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun CameraCircleContentBottomRow() {
     Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -81,8 +55,9 @@ private fun CameraCircleContentBottomRow() {
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
-fun CameraCircleButton() {
+private fun CameraCircleButton() {
     Image(
         modifier = Modifier.clickable {
             TODO()
