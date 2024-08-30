@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+    alias(libs.plugins.google.services)
+    kotlin("plugin.serialization") version "1.9.20"
 }
 
 kotlin {
@@ -16,6 +18,10 @@ kotlin {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
+        }
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
     
@@ -47,6 +53,8 @@ kotlin {
             implementation (libs.androidx.camera.lifecycle)
             // CameraX View library
             implementation (libs.androidx.camera.view)
+            //firebase
+            implementation(libs.firebase.android.bom)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -74,6 +82,9 @@ kotlin {
             implementation(libs.calf.permissions)
             // peekaboo-ui
             implementation(libs.peekaboo.ui)
+            //Firebase
+            api("dev.gitlive:firebase-firestore:2.0.0")
+            api("dev.gitlive:firebase-database:2.0.0")
         }
     }
 }
