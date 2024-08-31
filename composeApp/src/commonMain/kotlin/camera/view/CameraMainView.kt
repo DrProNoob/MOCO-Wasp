@@ -6,7 +6,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+
 import androidx.compose.foundation.layout.Row
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,31 +38,51 @@ import mocowasp.composeapp.generated.resources.camera_circle
 import mocowasp.composeapp.generated.resources.change_camera
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
-fun CameraMainView(navController: NavController, viewModel: CameraViewModel) {
+fun CameraMainView(navController: NavController, viewModel: CameraViewModel = koinViewModel()) {
 
     val state = rememberMocoCameraState(onCapture = viewModel::onCapture)
+    val image by viewModel.imageStateBitmap.collectAsState()
 
-    val image by viewModel.imageState.collectAsStateWithLifecycle()
+    if (image != null) {
+        SendView( viewModel = viewModel)
+    } else {
+        Box(modifier = Modifier.fillMaxSize()) {
+            MocoCamera(
+                state = state,
+                modifier = Modifier.fillMaxSize()
+            )
+            Column(modifier = Modifier.fillMaxSize()) {
+                image?.let {
+                    Image(
+                        bitmap = it,
+                        contentDescription = "Captured Image",
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        MocoCamera(
-            state = state,
-            modifier = Modifier.fillMaxSize()
-        )
-        Row(modifier = Modifier
-            .align(Alignment.BottomCenter)
-            .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
+            Row(modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
-            CameraCircleContentBottomRow(
-                onCapture = {viewModel.triggerCapture(state)},
-                onInverseCamera = {viewModel.onInverseCamera(state)} )
-        }
+                CameraCircleContentBottomRow(
+                    onCapture = {
+                        viewModel.triggerCapture(state)
 
+                    },
+                    onInverseCamera = {viewModel.onInverseCamera(state)} )
+            }
+
+        }
     }
 }
+
 
 
 
