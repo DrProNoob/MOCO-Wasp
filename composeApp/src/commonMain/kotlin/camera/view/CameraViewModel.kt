@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import camera.Util.byteToData
+import camera.Util.compressImage
 import camera.Util.toImageBitmap
 import camera.view.events.CameraEvent
 import dev.gitlive.firebase.Firebase
@@ -24,7 +25,9 @@ class CameraViewModel ():ViewModel() {
     }
     val storeRef = imageDbStorage.reference
     val imageRef = storeRef.child("images")
-    val testRef = imageRef.child("${Random.nextLong()}.jpg")
+    val uploadRef = imageRef.child("${Random.nextLong()}.jpg")
+
+
 
 
 
@@ -52,8 +55,9 @@ class CameraViewModel ():ViewModel() {
 
    private fun uploadImage(image: ByteArray) {
         viewModelScope.launch {
-            val data = byteToData(image)
-            testRef.putData(data)
+            val cImage = compressImage(image, 50)
+            val data = byteToData(cImage)
+            uploadRef.putData(data)
         }
     }
 
