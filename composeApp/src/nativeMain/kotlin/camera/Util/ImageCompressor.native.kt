@@ -24,10 +24,10 @@ actual fun compressImage(image: ByteArray, qualtity: Int): ByteArray {
     return image
 }
 
-private typealias ImageBytes = NSData
+
 
 @OptIn(ExperimentalForeignApi::class)
-private fun ImageBytes.toByteArray():ByteArray = ByteArray(this@toByteArray.length.toInt()).apply {
+private fun NSData.toByteArray():ByteArray = ByteArray(this@toByteArray.length.toInt()).apply {
     usePinned {
         memcpy(it.addressOf(0),this@toByteArray.bytes, this@toByteArray.length())
     }

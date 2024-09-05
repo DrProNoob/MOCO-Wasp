@@ -10,8 +10,6 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -22,59 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.preat.peekaboo.ui.camera.PeekabooCameraState
 import com.preat.peekaboo.ui.camera.loadCameraProvider
-import com.preat.peekaboo.ui.camera.rememberPeekabooCameraState
-import java.util.concurrent.Executors
 import java.io.ByteArrayOutputStream
+import java.util.concurrent.Executors
 
 
 private val executor = Executors.newSingleThreadExecutor()
-
-@Composable
-actual fun MocoCamera(
-    modifier: Modifier,
-    cameraMode: camera.view.CameraMode,
-    captureIcon: @Composable (onClick: () -> Unit) -> Unit,
-    convertIcon: @Composable (onClick: () -> Unit) -> Unit,
-    progressIndicator: @Composable () -> Unit,
-    onCapture: (byteArray: ByteArray?) -> Unit,
-    onFrame: ((frame: ByteArray) -> Unit)?
-) {
-    val state =
-        rememberMocoCameraState(
-            initialCameraMode = cameraMode,
-            onCapture = onCapture
-        )
-    Box(modifier = modifier,
-        ) {
-        CompatOverlay(
-            modifier = Modifier.fillMaxSize(),
-            state = state,
-            captureIcon = captureIcon,
-            convertIcon = convertIcon,
-            progressIndicator = progressIndicator
-        )
-    }
-}
-
-
-@Composable
-private fun CompatOverlay(
-    modifier: Modifier,
-    state: MocoCameraState,
-    captureIcon: @Composable (onClick: () -> Unit) -> Unit,
-    convertIcon: @Composable (onClick: () -> Unit) -> Unit,
-    progressIndicator: @Composable () -> Unit,
-) {
-    Box(modifier = modifier) {
-        captureIcon(state::capture)
-        convertIcon(state::toggleCamera)
-        if (state.isCapturing) {
-            progressIndicator()
-        }
-    }
-}
 
 
 
