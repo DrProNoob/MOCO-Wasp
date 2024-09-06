@@ -22,6 +22,11 @@ expect class MocoCameraState {
     var cameraMode: CameraMode
         internal set
 
+    var isTorchOn: Boolean
+        internal set
+
+    fun toggleTorch()
+
     fun toggleCamera()
 
     fun capture()

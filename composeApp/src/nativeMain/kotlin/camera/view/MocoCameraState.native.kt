@@ -78,4 +78,11 @@ actual class MocoCameraState(
             )
         }
     }
+
+    actual var isTorchOn: Boolean
+        get() = TODO("Not yet implemented")
+        set(value) {}
+
+    actual fun toggleTorch() {
+    }
 }

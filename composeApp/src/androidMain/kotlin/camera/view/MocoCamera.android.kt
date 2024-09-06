@@ -2,6 +2,7 @@ package camera.view
 
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.view.ViewGroup
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -40,14 +41,16 @@ private fun CameraWithGrantedPermission(
 
     val preview = Preview.Builder().build()
     val previewView = remember { PreviewView(context) }
-    val imageCapture: ImageCapture = remember { ImageCapture.Builder().build() }
+    val imageCapture: ImageCapture = remember {
+        ImageCapture.Builder()
+            .setFlashMode(if (state.isTorchOn) ImageCapture.FLASH_MODE_ON else ImageCapture.FLASH_MODE_OFF)
+            .build() }
     val backgroundExecutor = remember { Executors.newSingleThreadExecutor() }
     val imageAnalyzer =
         remember(state.onFrame) {
             state.onFrame?.let { onFrame ->
                 val analyzer =
                     ImageAnalysis.Builder()
-                        .setTargetAspectRatio(AspectRatio.RATIO_4_3)
                         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                         .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
                         .build()
@@ -69,6 +72,10 @@ private fun CameraWithGrantedPermission(
                         CameraSelector.LENS_FACING_FRONT
                     }
                     CameraMode.Back -> {
+                        CameraSelector.LENS_FACING_BACK
+                    }
+
+                    else -> {
                         CameraSelector.LENS_FACING_BACK
                     }
                 }
@@ -95,6 +102,10 @@ private fun CameraWithGrantedPermission(
                 ).toTypedArray(),
             )
             preview.setSurfaceProvider(previewView.surfaceProvider)
+            previewView.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+            )
         }
     }
 

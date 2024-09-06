@@ -34,6 +34,8 @@ actual class MocoCameraState(
 
     actual var cameraMode: CameraMode by mutableStateOf(cameraMode)
 
+    actual var isTorchOn: Boolean by mutableStateOf(false)
+
     internal var triggerCaptureAnchor: (() -> Unit)? = null
 
     actual fun toggleCamera() {
@@ -56,6 +58,11 @@ actual class MocoCameraState(
     internal fun onCameraReady() {
         isCameraReady = true
     }
+
+    actual fun toggleTorch() {
+        isTorchOn = !isTorchOn
+    }
+
 
     companion object {
         fun saver(
