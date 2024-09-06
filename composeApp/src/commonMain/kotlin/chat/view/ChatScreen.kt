@@ -4,6 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Send
+import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,11 +17,13 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
-fun ChatScreen() {
+fun ChatScreen(viewModel:ChatViewModel) {
     var message by remember { mutableStateOf(TextFieldValue("")) }
     val scrollState = rememberScrollState()
+    val messages by viewModel.messages.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -63,6 +69,7 @@ fun ChatScreen() {
                 shape = MaterialTheme.shapes.medium,
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF128C7E))
             ) {
+                Icon(Icons.AutoMirrored.Outlined.Send,contentDescription = null)
                 Text("Send", color = Color.White)
             }
         }

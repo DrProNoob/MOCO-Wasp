@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "859200320525",
+    "project_id": "moco-wasp",
+    "storage_bucket": "moco-wasp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859200320525:android:650f4368a649091eec1144",
+        "android_client_info": {
+          "package_name": "org.example.project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-bl6aelf852WZgFRKS6GKWGeYq9MdglI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

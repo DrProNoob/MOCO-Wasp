@@ -13,18 +13,29 @@ androidx-test-junit = "1.2.1"
 compose-plugin = "1.6.11"
 junit = "4.13.2"
 kotlin = "2.0.0"
+#Firebase android
+firebase-android-bom = "33.2.0"
+#Gradle
+gradlePlugins-crashlytics = "2.9.9"
+gradlePlugins-google-services = "4.4.1"
 
 koin = "3.6.0-Beta4"
 koinComposeMultiplatform = "1.2.0-Beta4"
+materialIconsExtended = "1.6.8"
 navigationCompose = "2.8.0-alpha08"
 lifecycleViewModel = "2.8.4"
 ktor-client = "2.3.7"
 
-room = "2.7.0-alpha01"
+room = "2.7.0-alpha07"
 ksp = "2.0.0-1.0.24"
 sqlite = "2.5.0-SNAPSHOT"
+identityJvm = "202408.1"
+firebaseDatabaseKtx = "21.0.0"
 
 [libraries]
+#Firebase
+firebase-android-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-android-bom" }
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -56,8 +67,12 @@ room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-runtime-android = { module = "androidx.room:room-runtime-android", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+identity-jvm = { group = "com.android.identity", name = "identity-jvm", version.ref = "identityJvm" }
+firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
 
 [plugins]
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "gradlePlugins-crashlytics" }
+google-services = { id = "com.google.gms.google-services", version.ref = "gradlePlugins-google-services" }
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }

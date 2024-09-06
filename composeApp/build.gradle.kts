@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+    alias(libs.plugins.google.services)
+    kotlin("plugin.serialization") version "1.9.20"
 }
 
 kotlin {
@@ -29,7 +31,7 @@ kotlin {
             isStatic = true
         }
     }
-    
+    task("testClasses")
     sourceSets {
         
         androidMain.dependencies {
@@ -58,6 +60,14 @@ kotlin {
             //Room
             implementation(libs.room.runtime)
             implementation(libs.sqlite.bundled)
+            //icons
+            implementation("androidx.compose.material:material-icons-extended:1.6.8")
+            //date
+            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
+            //Firebase
+            api("dev.gitlive:firebase-firestore:2.0.0")
+            api("dev.gitlive:firebase-database:2.0.0")
+            api("dev.gitlive:firebase-storage:2.0.0")
         }
     }
 }
@@ -105,6 +115,7 @@ room {
 
 dependencies {
 
+    implementation(libs.firebase.database.ktx)
     // Room
     add("kspCommonMainMetadata", libs.room.compiler)
 }
