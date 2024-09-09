@@ -114,3 +114,15 @@ private fun CameraCircleButton(onClick : () -> Unit) {
     )
 }
 
+@Composable
+fun CameraButton(navController: NavController) {
+    Image(
+        modifier = Modifier.clickable {
+            navController.navigate("camera")
+        }
+            .padding(bottom = 26.dp),
+        painter = painterResource(Res.drawable.camera_circle),
+        contentDescription = null
+    )
+}
+
