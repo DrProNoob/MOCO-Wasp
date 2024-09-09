@@ -9,7 +9,7 @@ class PostDataSource(
 ) {
     suspend fun putPost(post: Post, serializersModule: SerializersModule) {
         val dbRef = firebaseDatabase.reference()
-            dbRef.child("posts").child(post.id.toString()).setValue(post) {
+            dbRef.child("posts").push().setValue(post) {
                 encodeDefaults = true
                 this.serializersModule = serializersModule
             }

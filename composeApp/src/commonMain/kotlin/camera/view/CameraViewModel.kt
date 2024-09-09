@@ -71,7 +71,7 @@ class CameraViewModel ():ViewModel() {
             realtimeDatabase.child("usersImage").child(userPicure.id.toString()).setValue(userPicure.imageUrl)
             //SO NUTZT MAN DAS
             val imageContent = CameraImageContent(contentId = "1", imageUrl = imagePath)
-            val post = Post(id = 1, userid = 1, title = "title", description = "description", contentId = imageContent)
+            val post = Post(userid = 1, title = "title", description = "description", contentId = imageContent)
             postDataSource.putPost(post, imageModule)
         }
     }
