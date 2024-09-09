@@ -6,15 +6,21 @@ import androidx.lifecycle.viewModelScope
 import camera.Util.byteToData
 import camera.Util.compressImage
 import camera.Util.toImageBitmap
+import camera.model.entity.CameraImageContent
 import camera.model.entity.UserPicure
+import camera.model.entity.imageModule
 import camera.view.events.CameraEvent
 import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.database.ServerValue
 import dev.gitlive.firebase.database.database
 import dev.gitlive.firebase.storage.StorageReference
 import dev.gitlive.firebase.storage.storage
+import feed.model.dataSource.PostDataSource
+import feed.model.entity.Post
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.builtins.serializer
 import kotlin.random.Random
 
 class CameraViewModel ():ViewModel() {
@@ -26,7 +32,7 @@ class CameraViewModel ():ViewModel() {
     val userImageDatabase = Firebase.database.apply {
         useEmulator(host = host, port = 9000)
     }
-    val userImageRef = userImageDatabase.reference()
+    val realtimeDatabase = userImageDatabase.reference()
 
 
 
@@ -36,6 +42,8 @@ class CameraViewModel ():ViewModel() {
     val storeRef = imageDbStorage.reference
     val imageRef = storeRef.child("images")
     val uploadRef = imageRef.child("${Random.nextLong()}.jpg")
+
+    val postDataSource = PostDataSource(userImageDatabase)
 
 
 
@@ -59,8 +67,12 @@ class CameraViewModel ():ViewModel() {
     private fun mapImageToUser(uploadRef:StorageReference) {
         viewModelScope.launch {
             val imagePath = uploadRef.getDownloadUrl()
-            val userPicure = UserPicure(id = 1, imageUrl = imagePath)
-            userImageRef.child("users").child(userPicure.id.toString()).setValue(userPicure.imageUrl)
+            val userPicure = UserPicure(id = 1, imageUrl = imagePath, postDate = ServerValue.TIMESTAMP)
+            realtimeDatabase.child("usersImage").child(userPicure.id.toString()).setValue(userPicure.imageUrl)
+            //SO NUTZT MAN DAS
+            val imageContent = CameraImageContent(contentId = "1", imageUrl = imagePath)
+            val post = Post(id = 1, userid = 1, title = "title", description = "description", contentId = imageContent)
+            postDataSource.putPost(post, imageModule)
         }
     }
 
