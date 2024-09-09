@@ -38,6 +38,8 @@ actual class MocoCameraState(
 
     actual var cameraMode: CameraMode by mutableStateOf(cameraMode)
 
+    actual var isTorchOn: Boolean by mutableStateOf(false)
+
     actual fun toggleCamera() {
         cameraMode = cameraMode.inverse()
     }
@@ -79,10 +81,8 @@ actual class MocoCameraState(
         }
     }
 
-    actual var isTorchOn: Boolean
-        get() = TODO("Not yet implemented")
-        set(value) {}
 
     actual fun toggleTorch() {
+        isTorchOn = !isTorchOn
     }
 }

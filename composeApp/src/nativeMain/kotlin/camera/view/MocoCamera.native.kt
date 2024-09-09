@@ -31,6 +31,8 @@ import platform.AVFoundation.AVCaptureDeviceTypeBuiltInDualWideCamera
 import platform.AVFoundation.AVCaptureDeviceTypeBuiltInDuoCamera
 import platform.AVFoundation.AVCaptureDeviceTypeBuiltInUltraWideCamera
 import platform.AVFoundation.AVCaptureDeviceTypeBuiltInWideAngleCamera
+import platform.AVFoundation.AVCaptureFlashModeOff
+import platform.AVFoundation.AVCaptureFlashModeOn
 import platform.AVFoundation.AVCaptureInput
 import platform.AVFoundation.AVCaptureOutput
 import platform.AVFoundation.AVCapturePhoto
@@ -113,6 +115,9 @@ private fun AuthorizedCamera(
                 when (state.cameraMode) {
                     CameraMode.Front -> AVCaptureDevicePositionFront
                     CameraMode.Back -> AVCaptureDevicePositionBack
+                    else -> {
+                        AVCaptureDevicePositionBack
+                    }
                 },
             ).devices.firstOrNull() as? AVCaptureDevice
         }
@@ -167,7 +172,9 @@ private fun RealDeviceCamera(
         val photoSettings =
             AVCapturePhotoSettings.photoSettingsWithFormat(
                 format = mapOf(pair = AVVideoCodecKey to AVVideoCodecTypeJPEG),
-            )
+            ).apply {
+                flashMode = if (state.isTorchOn) AVCaptureFlashModeOn else AVCaptureFlashModeOff
+            }
         if (camera.position == AVCaptureDevicePositionFront) {
             capturePhotoOutput.connectionWithMediaType(AVMediaTypeVideo)
                 ?.automaticallyAdjustsVideoMirroring = false
@@ -211,6 +218,7 @@ private fun RealDeviceCamera(
             AVCaptureVideoPreviewLayer(session = captureSession)
         }
 
+
     // Update captureSession with new camera configuration whenever isFrontCamera changed.
     LaunchedEffect(state.cameraMode) {
         val dispatchGroup = dispatch_group_create()
@@ -231,6 +239,8 @@ private fun RealDeviceCamera(
                 captureSession.addInput(newInput)
             }
         }
+
+
 
         captureSession.commitConfiguration()
 
