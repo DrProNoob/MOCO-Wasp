@@ -11,6 +11,7 @@ import camera.model.entity.UserPicure
 import camera.model.entity.imageModule
 import camera.view.events.CameraEvent
 import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.database.FirebaseDatabase
 import dev.gitlive.firebase.database.ServerValue
 import dev.gitlive.firebase.database.database
 import dev.gitlive.firebase.storage.StorageReference
@@ -23,15 +24,13 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.builtins.serializer
 import kotlin.random.Random
 
-class CameraViewModel ():ViewModel() {
+class CameraViewModel (firebaseDatabase: FirebaseDatabase):ViewModel() {
 
     val host = "192.168.178.20"
     val port = 9199
     val local = "10.0.2.2"
 
-    val userImageDatabase = Firebase.database.apply {
-        useEmulator(host = host, port = 9000)
-    }
+    val userImageDatabase = firebaseDatabase
     val realtimeDatabase = userImageDatabase.reference()
 
 

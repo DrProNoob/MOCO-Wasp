@@ -86,6 +86,8 @@ kotlin {
             api("dev.gitlive:firebase-firestore:2.0.0")
             api("dev.gitlive:firebase-database:2.0.0")
             api("dev.gitlive:firebase-storage:2.0.0")
+            //Kamel
+            implementation(libs.kamel.image)
         }
     }
 }
