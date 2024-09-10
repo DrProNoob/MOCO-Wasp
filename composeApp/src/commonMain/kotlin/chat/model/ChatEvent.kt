@@ -1,5 +1,6 @@
 package chat.model
 
 sealed interface ChatEvent {
-    object SaveMessage:ChatEvent
+    data class SaveMessage(val messageText:String):ChatEvent
+    data class SaveChatRoom(val chatRoom: ChatRoom):ChatEvent
 }

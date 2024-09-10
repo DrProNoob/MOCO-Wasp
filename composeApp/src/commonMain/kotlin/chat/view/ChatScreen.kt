@@ -2,6 +2,8 @@ package chat.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -18,13 +20,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import chat.model.ChatEvent
 
 @Composable
 fun ChatScreen(viewModel:ChatViewModel) {
     var message by remember { mutableStateOf(TextFieldValue("")) }
     val scrollState = rememberScrollState()
     val messages by viewModel.messages.collectAsStateWithLifecycle()
-
+    val onEvent = viewModel::onEvent
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -42,6 +45,14 @@ fun ChatScreen(viewModel:ChatViewModel) {
             ChatBubble("Hi, how are you?", isUser = true)
             ChatBubble("I'm good, thanks!", isUser = false)
             ChatBubble("Great to hear!", isUser = true)
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                items(messages) { message ->
+                    ChatBubble(message.messageText, isUser = true)
+                }
+            }
         }
 
         // Message input field
@@ -65,12 +76,12 @@ fun ChatScreen(viewModel:ChatViewModel) {
             Button(
                 onClick = {
                     message = TextFieldValue("")
+                    onEvent(ChatEvent.SaveMessage(messageText= message.text))
                 },
                 shape = MaterialTheme.shapes.medium,
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF128C7E))
             ) {
                 Icon(Icons.AutoMirrored.Outlined.Send,contentDescription = null)
-                Text("Send", color = Color.White)
             }
         }
     }

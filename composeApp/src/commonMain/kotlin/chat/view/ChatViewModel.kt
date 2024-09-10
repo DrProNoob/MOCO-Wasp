@@ -16,9 +16,6 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.modules.serializersModuleOf
 
 class ChatViewModel( ): ViewModel() {
-
-
-
     val remoteDatabase = Firebase.database.apply {
         useEmulator("192.168.178.35",9000)
     }
@@ -28,11 +25,15 @@ class ChatViewModel( ): ViewModel() {
     private val _messages = chatRepository.getAllMessages().stateIn(viewModelScope, SharingStarted.WhileSubscribed(),emptyList())
     val messages: StateFlow<List<Message>> = _messages
 
-    val message= Message(1,"l",1,1,0L)
     fun onEvent(event: ChatEvent){
         when(event){
-            ChatEvent.SaveMessage ->{
+            is ChatEvent.SaveMessage ->{
+                saveMessage(Message(1, event.messageText, 1,1,1L))
             }
+            is ChatEvent.SaveChatRoom ->{
+                saveChatRoom(event.chatRoom)
+            }
+
         }
     }
 
@@ -44,7 +45,7 @@ class ChatViewModel( ): ViewModel() {
 
     fun saveMessage(message: Message) {
         viewModelScope.launch {
-            dataRef.child("messages").child(message.id.toString()).setValue(message)
+            chatRepository.saveMessage(message)
         }
     }
 

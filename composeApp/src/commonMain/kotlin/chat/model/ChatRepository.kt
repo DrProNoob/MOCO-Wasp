@@ -14,11 +14,12 @@ class ChatRepository(
 
     private val dbRef = firebaseDatabase.reference()
 
-    suspend fun saveMessage(message: Message, serializersModule: SerializersModule) {
-        dbRef.child("messages").child(message.id.toString()).push().setValue(message){
-            encodeDefaults = true
-            this.serializersModule = serializersModule
-        }
+    suspend fun saveMessage(message: Message) {
+        val messageRef = dbRef.child("messages").child(message.chatRoomId.toString()).push()
+        messageRef.setValue(message)
+    }
+    suspend fun saveChatRoom(chatRoom: ChatRoom) {
+        dbRef.child("chatRooms").push().setValue(chatRoom)
     }
 
     fun getAllMessages(): Flow<List<Message>> {
