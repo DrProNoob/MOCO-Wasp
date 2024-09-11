@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,14 +33,16 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import camera.view.events.CameraEvent
+import camera.view.events.CameraPostEvent
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun SendView(viewModel: CameraViewModel = koinViewModel()) {
+fun SendView(navController: NavController,viewModel: CameraViewModel = koinViewModel()) {
     val image by viewModel.imageStateBitmap.collectAsStateWithLifecycle()
-    val uploadImageEvent = viewModel::handleCameraEvent
+    val state by viewModel.cameraPostState.collectAsStateWithLifecycle()
+    val onEvent = viewModel::handleCameraPostEvent
     val resetImage = viewModel::resetImage
 
     Column(
@@ -48,14 +51,14 @@ fun SendView(viewModel: CameraViewModel = koinViewModel()) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        image?.let { SendContent( it, onUploadImage = uploadImageEvent, onResetImage = resetImage) }
+        image?.let { SendContent( it, onEvent = onEvent, state = state, onResetImage = resetImage, navController = navController) }
     }
 
 
 }
 
 @Composable
-private fun SendContent(sendImage: ImageBitmap, onUploadImage : (CameraEvent) -> Unit, onResetImage: () -> Unit) {
+private fun SendContent(sendImage: ImageBitmap, onEvent: (CameraPostEvent) -> Unit, state: CameraPostState, onResetImage: () -> Unit, navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -63,9 +66,25 @@ private fun SendContent(sendImage: ImageBitmap, onUploadImage : (CameraEvent) ->
     ) {
         Image(bitmap = sendImage, contentDescription = "Image to send")
         Spacer(modifier = Modifier.padding(top = 24.dp))
+        TextField(
+            value = state.title,
+            onValueChange = { onEvent(CameraPostEvent.SetTitle(it)) },
+            label = { Text("Title", fontStyle = FontStyle.Italic) },
+            modifier = Modifier.padding(8.dp)
+        )
+        Spacer(modifier = Modifier.padding(top = 8.dp))
+        TextField(
+            value = state.description ?: "",
+            onValueChange = { onEvent(CameraPostEvent.SetDescription(it)) },
+            label = { Text("Description", fontStyle = FontStyle.Italic) },
+            modifier = Modifier.padding(8.dp)
+        )
         Button(
             modifier = Modifier.size(width = 200.dp, height = 50.dp),
-            onClick = {onUploadImage(CameraEvent.UploadImage)},
+            onClick = {
+                onEvent(CameraPostEvent.SavePost)
+                navController.popBackStack()
+                      },
             colors = ButtonColors(
                 containerColor = Color.White,
                 contentColor = Color.Black,

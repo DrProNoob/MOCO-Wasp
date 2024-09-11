@@ -36,7 +36,7 @@ fun CameraMainView(navController: NavController, viewModel: CameraViewModel = ko
     val isTorchOn = state.isTorchOn
 
     if (image != null) {
-        SendView( viewModel = viewModel)
+        SendView(navController = navController, viewModel = viewModel)
     } else {
         Box(modifier = Modifier.fillMaxSize()) {
             MocoCamera(
