@@ -1,7 +1,7 @@
 package org.example.project
 
 import android.app.Application
-import camera.di.initCameraKoin
+import core.di.initKoin
 import org.koin.android.ext.koin.androidContext
 
 
@@ -9,7 +9,7 @@ class MyApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        initCameraKoin {
+        initKoin {
             androidContext(this@MyApplication)
         }
     }

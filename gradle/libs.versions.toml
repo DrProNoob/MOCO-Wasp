@@ -13,6 +13,7 @@ androidx-test-junit = "1.2.1"
 calfPermissions = "0.5.4"
 compose-plugin = "1.6.10"
 junit = "4.13.2"
+kamelImage = "0.9.5"
 kotlin = "2.0.20"
 
 koin = "3.6.0-Beta4"
@@ -42,6 +43,7 @@ firebase-gitlive-sdk = "2.0.0"
 androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraLifecycle" }
 androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "cameraLifecycle" }
 calf-permissions = { module = "com.mohamedrejeb.calf:calf-permissions", version.ref = "calfPermissions" }
+kamel-image = { module = "media.kamel:kamel-image", version.ref = "kamelImage" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -53,6 +55,7 @@ androidx-material = { group = "com.google.android.material", name = "material", 
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor-client" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-client" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor-client" }
 ktor-client-encoding = { module = "io.ktor:ktor-client-encoding", version.ref = "ktor-client" }

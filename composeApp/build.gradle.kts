@@ -55,6 +55,8 @@ kotlin {
             implementation (libs.androidx.camera.view)
             //firebase
             implementation(libs.firebase.android.bom)
+            //Ktor
+            implementation(libs.ktor.client.cio)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -86,6 +88,8 @@ kotlin {
             api("dev.gitlive:firebase-firestore:2.0.0")
             api("dev.gitlive:firebase-database:2.0.0")
             api("dev.gitlive:firebase-storage:2.0.0")
+            //Kamel
+            implementation(libs.kamel.image)
         }
     }
 }
