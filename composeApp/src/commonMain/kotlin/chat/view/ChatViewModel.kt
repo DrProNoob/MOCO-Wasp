@@ -11,24 +11,33 @@ import dev.gitlive.firebase.database.database
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.serialization.modules.serializersModuleOf
 
-class ChatViewModel( ): ViewModel() {
+class ChatViewModel(): ViewModel() {
     val remoteDatabase = Firebase.database.apply {
         useEmulator("192.168.178.35",9000)
     }
     val dataRef = remoteDatabase.reference()
     val chatRepository = ChatRepository(remoteDatabase)
 
-    private val _messages = chatRepository.getAllMessages().stateIn(viewModelScope, SharingStarted.WhileSubscribed(),emptyList())
+    private val _chatRoom = chatRepository.getCurrentChatRoom(1)
+    //val chatRoom: StateFlow<ChatRoom> = _chatRoom
+    var chatRoomId : String=""
+    fun getChatRoomId(){
+        viewModelScope.launch{
+            chatRoomId = _chatRoom.first()
+        }
+    }
+    private val _messages = chatRepository.getAllMessagesFromChatRoomId(chatRoomId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(),emptyList())
     val messages: StateFlow<List<Message>> = _messages
 
     fun onEvent(event: ChatEvent){
         when(event){
             is ChatEvent.SaveMessage ->{
-                saveMessage(Message(1, event.messageText, 1,1,1L))
+                saveMessage(Message( event.messageText, "",1,1L))
             }
             is ChatEvent.SaveChatRoom ->{
                 saveChatRoom(event.chatRoom)
@@ -39,7 +48,7 @@ class ChatViewModel( ): ViewModel() {
 
     fun saveChatRoom(chatRoom: ChatRoom) {
         viewModelScope.launch {
-            dataRef.child("chatRooms").child(chatRoom.chatRoomId.toString()).setValue(chatRoom)
+            chatRepository.saveChatRoom(chatRoom)
         }
     }
 

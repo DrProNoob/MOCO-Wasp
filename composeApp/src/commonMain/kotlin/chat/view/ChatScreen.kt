@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import chat.model.ChatEvent
+import chat.model.ChatRoom
 
 @Composable
 fun ChatScreen(viewModel:ChatViewModel) {
@@ -36,8 +37,7 @@ fun ChatScreen(viewModel:ChatViewModel) {
     ) {
         Column(
             modifier = Modifier
-                .weight(1f)
-                .verticalScroll(scrollState),
+                .weight(1f),
             verticalArrangement = Arrangement.Top
         ) {
             // Dummy messages for demonstration
@@ -64,8 +64,7 @@ fun ChatScreen(viewModel:ChatViewModel) {
         ) {
             OutlinedTextField(
                 modifier = Modifier
-                    .padding(12.dp)
-                    .height(24.dp),
+                    .padding(12.dp),
                 value = message,
                 onValueChange = {message = it}
             )
@@ -75,8 +74,9 @@ fun ChatScreen(viewModel:ChatViewModel) {
 
             Button(
                 onClick = {
-                    message = TextFieldValue("")
+                    onEvent(ChatEvent.SaveChatRoom(chatRoom = ChatRoom(listOf(1,2),1)))
                     onEvent(ChatEvent.SaveMessage(messageText= message.text))
+                    message = TextFieldValue("")
                 },
                 shape = MaterialTheme.shapes.medium,
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF128C7E))

@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -17,10 +16,14 @@ kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -31,12 +34,28 @@ kotlin {
             isStatic = true
         }
     }
-    task("testClasses")
+
     sourceSets {
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            //Koin
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
+            //Camera
+            // CameraX core library
+            implementation (libs.androidx.camera.core)
+            // CameraX Camera2 implementation
+            implementation (libs.androidx.camera.camera2)
+            // CameraX Lifecycle library
+            implementation (libs.androidx.camera.lifecycle)
+            // CameraX View library
+            implementation (libs.androidx.camera.view)
+            //firebase
+            implementation(libs.firebase.android.bom)
+            //Ktor
+            implementation(libs.ktor.client.cio)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -60,14 +79,16 @@ kotlin {
             //Room
             implementation(libs.room.runtime)
             implementation(libs.sqlite.bundled)
-            //icons
-            implementation("androidx.compose.material:material-icons-extended:1.6.8")
-            //date
-            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
+            //Permissions
+            implementation(libs.calf.permissions)
+            // peekaboo-ui
+            implementation(libs.peekaboo.ui)
             //Firebase
             api("dev.gitlive:firebase-firestore:2.0.0")
             api("dev.gitlive:firebase-database:2.0.0")
             api("dev.gitlive:firebase-storage:2.0.0")
+            //Kamel
+            implementation(libs.kamel.image)
         }
     }
 }
@@ -98,8 +119,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         compose = true
@@ -115,9 +136,18 @@ room {
 
 dependencies {
 
-    implementation(libs.firebase.database.ktx)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.runtime.saveable.android)
     // Room
     add("kspCommonMainMetadata", libs.room.compiler)
+    // permission
+    commonMainApi(libs.permissions)
+
+    // compose multiplatform
+    commonMainApi(libs.permissions.compose) // permissions api + compose extensions
+
+    commonTestImplementation(libs.permissions.test)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
@@ -125,4 +155,3 @@ tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach
         dependsOn("kspCommonMainKotlinMetadata")
     }
 }
-

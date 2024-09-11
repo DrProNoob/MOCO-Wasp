@@ -11,21 +11,29 @@ import kotlinx.serialization.modules.SerializersModule
 class ChatRepository(
     private val firebaseDatabase: FirebaseDatabase
 ) {
-
     private val dbRef = firebaseDatabase.reference()
 
     suspend fun saveMessage(message: Message) {
-        val messageRef = dbRef.child("messages").child(message.chatRoomId.toString()).push()
-        messageRef.setValue(message)
+        dbRef.child("chatRooms").child(message.chatRoomId).child("messages").push().setValue(message)
     }
-    suspend fun saveChatRoom(chatRoom: ChatRoom) {
-        dbRef.child("chatRooms").push().setValue(chatRoom)
+    suspend fun saveChatRoom(chatRoom: ChatRoom) :String? {
+        val chatRef = dbRef.child("chatRooms").push()
+        val id = chatRef.key
+        chatRef.setValue(chatRoom)
+        return id
     }
 
-    fun getAllMessages(): Flow<List<Message>> {
-        return dbRef.child("messages").valueEvents.map { dataSnapshot ->
+    fun getAllMessagesFromChatRoomId(chatRoomId : String): Flow<List<Message>> {
+        return dbRef.child("chatRooms").child(chatRoomId).child("messages").valueEvents.map {
+            dataSnapshot ->
             dataSnapshot.children.mapNotNull { it.toMessage() }
         }.scan(emptyList()) { acc, messages -> acc + messages }
+    }
+    fun getCurrentChatRoom(userId:Int):Flow<String>{
+        return dbRef.child("chatRooms").child(userId.toString()).valueEvents.map{
+                dataSnapshot ->
+            dataSnapshot.value as String
+        }
     }
 
     private fun DataSnapshot.toMessage(): Message? {

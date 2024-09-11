@@ -1,8 +1,13 @@
-import androidx.compose.runtime.remember
+import androidx.compose.ui.uikit.OnFocusBehavior
 import androidx.compose.ui.window.ComposeUIViewController
-import chat.model.getDatabaseBuilder
-import chat.model.getDatabasebuilder
+import core.di.initKoin
 
-fun MainViewController() = ComposeUIViewController {
+@Suppress("FunctionName", "unused")
+fun MainViewController() = ComposeUIViewController(
+    configure = {
+        initKoin()
+        onFocusBehavior = OnFocusBehavior.DoNothing
+    }
+) {
     App()
 }
