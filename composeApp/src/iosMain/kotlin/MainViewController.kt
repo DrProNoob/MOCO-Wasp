@@ -1,11 +1,11 @@
 import androidx.compose.ui.uikit.OnFocusBehavior
 import androidx.compose.ui.window.ComposeUIViewController
-import camera.di.initCameraKoin
+import core.di.initKoin
 
 @Suppress("FunctionName", "unused")
 fun MainViewController() = ComposeUIViewController(
     configure = {
-        initCameraKoin()
+        initKoin()
         onFocusBehavior = OnFocusBehavior.DoNothing
     }
 ) {
