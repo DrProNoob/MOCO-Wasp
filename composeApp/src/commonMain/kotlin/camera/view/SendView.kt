@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Send
 import androidx.compose.material.icons.outlined.Send
@@ -28,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -64,20 +67,22 @@ private fun SendContent(sendImage: ImageBitmap, onEvent: (CameraPostEvent) -> Un
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Image(bitmap = sendImage, contentDescription = "Image to send")
-        Spacer(modifier = Modifier.padding(top = 24.dp))
+        Image(modifier = Modifier.padding(all = 25.dp), bitmap = sendImage, contentDescription = "Image to send")
+        Spacer(modifier = Modifier.padding(top = 10.dp))
         TextField(
             value = state.title,
             onValueChange = { onEvent(CameraPostEvent.SetTitle(it)) },
             label = { Text("Title", fontStyle = FontStyle.Italic) },
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(8.dp),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         )
         Spacer(modifier = Modifier.padding(top = 8.dp))
         TextField(
             value = state.description ?: "",
             onValueChange = { onEvent(CameraPostEvent.SetDescription(it)) },
             label = { Text("Description", fontStyle = FontStyle.Italic) },
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(8.dp),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
         )
         Button(
             modifier = Modifier.size(width = 200.dp, height = 50.dp),

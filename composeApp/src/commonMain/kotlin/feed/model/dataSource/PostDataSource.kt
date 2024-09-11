@@ -49,6 +49,14 @@ class PostDataSource(
         )
     }
 
+    private suspend fun getPostById(postid: Int): Post {
+        return dbRef.child("posts").child(postid.toString()).valueEvents.mapNotNull { dataSnapshot ->
+            dataSnapshot.value(PostDTO.serializer()) {
+                serializersModule = imageModule
+            }.mapToPost()
+        }.toList().first()
+    }
+
     private suspend fun getUserNameById(userid: Int): String {
         if (userid == 1) {
             return "User1"
