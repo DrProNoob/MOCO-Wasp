@@ -55,6 +55,8 @@ kotlin {
             implementation (libs.androidx.camera.view)
             //firebase
             implementation(libs.firebase.android.bom)
+            //Ktor
+            implementation(libs.ktor.client.cio)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

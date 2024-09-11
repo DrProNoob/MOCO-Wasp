@@ -1,11 +1,9 @@
 package feed.model.entity
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class Post(
-    val userid: Long,
+    val userid: Int,
+    val userName: String,
     val title: String,
     val description: String?,
-    val contentId:AbstractContent
+    val content: AbstractContent
 )

@@ -2,9 +2,7 @@ package feed.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.database.FirebaseDatabase
-import dev.gitlive.firebase.database.database
 import feed.model.dataSource.PostDataSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,8 +21,16 @@ class FeedViewModel(firebaseDatabase: FirebaseDatabase) : ViewModel() {
     private val postDataSource = PostDataSource(database)
 
     private val _state = MutableStateFlow(FeedState())
-    private val _posts = postDataSource.getAllPosts().stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
-    val state = combine(_state, _posts) { state, posts ->
+
+    private val _posts = postDataSource.getAllPosts()
+
+/*    private val _posts = flow {
+        emit(postDataSource.getAllPosts())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())*/
+
+
+
+    val state = combine(_state, _posts ) { state, posts ->
         state.copy(
             posts = posts
         )

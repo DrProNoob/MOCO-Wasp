@@ -13,15 +13,14 @@ import camera.view.events.CameraEvent
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.database.FirebaseDatabase
 import dev.gitlive.firebase.database.ServerValue
-import dev.gitlive.firebase.database.database
 import dev.gitlive.firebase.storage.StorageReference
 import dev.gitlive.firebase.storage.storage
 import feed.model.dataSource.PostDataSource
-import feed.model.entity.Post
+
+import feed.model.dtos.PostDTO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.serialization.builtins.serializer
 import kotlin.random.Random
 
 class CameraViewModel (firebaseDatabase: FirebaseDatabase):ViewModel() {
@@ -66,11 +65,11 @@ class CameraViewModel (firebaseDatabase: FirebaseDatabase):ViewModel() {
     private fun mapImageToUser(uploadRef:StorageReference) {
         viewModelScope.launch {
             val imagePath = uploadRef.getDownloadUrl()
-            val userPicure = UserPicure(id = 1, imageUrl = imagePath, postDate = ServerValue.TIMESTAMP)
-            realtimeDatabase.child("usersImage").child(userPicure.id.toString()).setValue(userPicure.imageUrl)
+            val userPicure = UserPicure(userId = 1, imageUrl = imagePath, postDate = ServerValue.TIMESTAMP)
+            realtimeDatabase.child("usersImage").child(userPicure.userId.toString()).setValue(userPicure.imageUrl)
             //SO NUTZT MAN DAS
-            val imageContent = CameraImageContent(contentId = "1", imageUrl = imagePath)
-            val post = Post(userid = 1, title = "title", description = "description", contentId = imageContent)
+            val imageContent = CameraImageContent(imageUrl = imagePath)
+            val post = PostDTO(userid = 1, title = "title", description = "description", content = imageContent)
             postDataSource.putPost(post, imageModule)
         }
     }
