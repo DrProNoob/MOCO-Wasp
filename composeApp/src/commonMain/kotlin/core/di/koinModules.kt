@@ -7,7 +7,7 @@ import dev.gitlive.firebase.database.database
 import dev.gitlive.firebase.storage.FirebaseStorage
 import dev.gitlive.firebase.storage.storage
 import feed.view.FeedViewModel
-import org.koin.compose.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val sharedModule = module {
