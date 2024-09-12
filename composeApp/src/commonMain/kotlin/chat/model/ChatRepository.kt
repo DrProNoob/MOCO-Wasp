@@ -37,11 +37,18 @@ class ChatRepository(
         }else return id
     }
 
-    fun getAllMessagesFromChatRoomId(chatRoomId : String): Flow<List<Message>> {
+    fun getAllMessagesFromChatRoomId2(chatRoomId : String): Flow<List<Message>> {
         return dbRef.child("chatRooms").child(chatRoomId).child("messages").valueEvents.map {
             dataSnapshot ->
             dataSnapshot.children.mapNotNull { it.toMessage() }
         }.scan(emptyList()) { acc, messages -> acc + messages }
+    }
+    fun getAllMessagesFromChatRoomId(chatRoomId : String): Flow<List<Message>> {
+        return dbRef.child("chatRooms").child(chatRoomId)
+            .child("messages").valueEvents.map{
+                dataSnapshot->
+                dataSnapshot.children.map { it.value(Message.serializer()) }
+            }
     }
     suspend fun getCurrentChatRoom(chatRoomId: String):ChatRoom?{
         val path = dbRef.child("chatRooms").child(chatRoomId).key
