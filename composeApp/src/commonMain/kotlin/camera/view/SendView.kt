@@ -68,7 +68,7 @@ private fun SendContent(sendImage: ImageBitmap, onEvent: (CameraPostEvent) -> Un
         verticalArrangement = Arrangement.Center
     ) {
         Image(modifier = Modifier.padding(all = 25.dp), bitmap = sendImage, contentDescription = "Image to send")
-        Spacer(modifier = Modifier.padding(top = 10.dp))
+        Spacer(modifier = Modifier.padding(top = 5.dp))
         TextField(
             value = state.title,
             onValueChange = { onEvent(CameraPostEvent.SetTitle(it)) },
@@ -76,7 +76,7 @@ private fun SendContent(sendImage: ImageBitmap, onEvent: (CameraPostEvent) -> Un
             modifier = Modifier.padding(8.dp),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         )
-        Spacer(modifier = Modifier.padding(top = 8.dp))
+        Spacer(modifier = Modifier.padding(top = 7.dp))
         TextField(
             value = state.description ?: "",
             onValueChange = { onEvent(CameraPostEvent.SetDescription(it)) },
