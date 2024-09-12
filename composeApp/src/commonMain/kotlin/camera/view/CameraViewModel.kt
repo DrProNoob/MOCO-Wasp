@@ -10,9 +10,11 @@ import camera.model.entity.CameraImageContent
 import camera.model.entity.UserPicure
 import camera.model.entity.imageModule
 import camera.view.events.CameraEvent
+import camera.view.events.CameraPostEvent
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.database.FirebaseDatabase
 import dev.gitlive.firebase.database.ServerValue
+import dev.gitlive.firebase.storage.FirebaseStorage
 import dev.gitlive.firebase.storage.StorageReference
 import dev.gitlive.firebase.storage.storage
 import feed.model.dataSource.PostDataSource
@@ -20,10 +22,13 @@ import feed.model.dataSource.PostDataSource
 import feed.model.dtos.PostDTO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.random.Random
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
-class CameraViewModel (firebaseDatabase: FirebaseDatabase):ViewModel() {
+class CameraViewModel (imageDbStorage: FirebaseStorage,firebaseDatabase: FirebaseDatabase):ViewModel() {
 
     val host = "192.168.178.20"
     val port = 9199
@@ -34,12 +39,10 @@ class CameraViewModel (firebaseDatabase: FirebaseDatabase):ViewModel() {
 
 
 
-    val imageDbStorage = Firebase.storage.apply {
-        useEmulator(host = host, port = 9199)
-    }
     val storeRef = imageDbStorage.reference
     val imageRef = storeRef.child("images")
-    val uploadRef = imageRef.child("${Random.nextLong()}.jpg")
+    @OptIn(ExperimentalUuidApi::class)
+    val uploadRef = imageRef.child("${Uuid.random()}.jpg")
 
     val postDataSource = PostDataSource(userImageDatabase)
 
@@ -47,6 +50,8 @@ class CameraViewModel (firebaseDatabase: FirebaseDatabase):ViewModel() {
 
 
 
+    private val _cameraPostState = MutableStateFlow(CameraPostState())
+    val cameraPostState: StateFlow<CameraPostState> = _cameraPostState
     private val _imageStateBitmap = MutableStateFlow<ImageBitmap?>(null)
     val imageStateBitmap: StateFlow<ImageBitmap?> = _imageStateBitmap
     private val _imageStateByteArray = MutableStateFlow<ByteArray?>(null)
@@ -62,17 +67,7 @@ class CameraViewModel (firebaseDatabase: FirebaseDatabase):ViewModel() {
         }
     }
 
-    private fun mapImageToUser(uploadRef:StorageReference) {
-        viewModelScope.launch {
-            val imagePath = uploadRef.getDownloadUrl()
-            val userPicure = UserPicure(userId = 1, imageUrl = imagePath, postDate = ServerValue.TIMESTAMP)
-            realtimeDatabase.child("usersImage").child(userPicure.userId.toString()).setValue(userPicure.imageUrl)
-            //SO NUTZT MAN DAS
-            val imageContent = CameraImageContent(imageUrl = imagePath)
-            val post = PostDTO(userid = 1, title = "title", description = "description", content = imageContent)
-            postDataSource.putPost(post, imageModule)
-        }
-    }
+
 
     fun resetImage() {
         _imageStateBitmap.value = null
@@ -81,19 +76,54 @@ class CameraViewModel (firebaseDatabase: FirebaseDatabase):ViewModel() {
 
 
 
-   private fun uploadImage(image: ByteArray) {
-        viewModelScope.launch {
-            val cImage = compressImage(image, 50)
-            val data = byteToData(cImage)
-            uploadRef.putData(data)
-            mapImageToUser(uploadRef)
-        }
-    }
+  private suspend fun uploadImage(image: ByteArray): String {
+      val cImage = compressImage(image, 50)
+      val data = byteToData(cImage)
+      uploadRef.putData(data)
+      return uploadRef.getDownloadUrl()
+  }
 
-    fun handleCameraEvent(event:CameraEvent) {
+
+
+
+
+    fun handleCameraPostEvent(event: CameraPostEvent) {
         when (event) {
-            CameraEvent.UploadImage -> {
-                uploadImage(imageStateByteArray.value!!)
+            CameraPostEvent.SavePost -> {
+                viewModelScope.launch {
+                    if (cameraPostState.value.isLoading) return@launch
+                    _cameraPostState.update {
+                        it.copy(isLoading = true)
+                    }
+                    val title = _cameraPostState.value.title
+                    val description = _cameraPostState.value.description
+
+                    if (description != null) {
+                        if (title.isBlank() or description.isBlank()) {
+                            _cameraPostState.update {
+                                it.copy(isLoading = false)
+                            }
+                            return@launch
+                        }
+                    }
+                    val url = uploadImage(imageStateByteArray.value!!)
+                    val post = PostDTO(userid = 1, title = title, description = description, content = CameraImageContent(imageUrl = url))
+                    postDataSource.putPost(post, imageModule)
+                    _cameraPostState.update {
+                        it.copy(isLoading = false)
+                    }
+
+                }
+            }
+            is CameraPostEvent.SetDescription -> {
+                _cameraPostState.update {
+                    it.copy(description = event.description)
+                }
+            }
+            is CameraPostEvent.SetTitle -> {
+                _cameraPostState.update {
+                    it.copy(title = event.title)
+                }
             }
         }
     }

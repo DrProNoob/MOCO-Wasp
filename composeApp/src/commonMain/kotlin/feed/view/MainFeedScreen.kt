@@ -58,7 +58,7 @@ private fun FeedContent(paddingValues: PaddingValues, feedList: List<Post>) {
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(paddingValues),
     ) {
-        items(feedList) { item: Post ->
+        items(feedList, key = {it.contentKey}) { item: Post ->
             key(item.title) {
                 PostCard(
                     userName = item.userName,
@@ -90,7 +90,7 @@ fun ImageFeedContent(content: CameraImageContent) {
 @Composable
 fun checkContent(content: AbstractContent, post: Post) {
     if (content is CameraImageContent) {
-        return ImageFeedContent(post.content as CameraImageContent)
+        ImageFeedContent(post.content as CameraImageContent)
     }
 }
 

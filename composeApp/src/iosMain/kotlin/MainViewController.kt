@@ -6,7 +6,7 @@ import core.di.initKoin
 fun MainViewController() = ComposeUIViewController(
     configure = {
         initKoin()
-        onFocusBehavior = OnFocusBehavior.DoNothing
+        onFocusBehavior = OnFocusBehavior.FocusableAboveKeyboard
     }
 ) {
     App()
