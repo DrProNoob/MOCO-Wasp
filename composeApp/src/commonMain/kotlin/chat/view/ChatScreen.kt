@@ -27,7 +27,7 @@ import chat.model.ChatRoom
 fun ChatScreen(viewModel:ChatViewModel) {
     var message by remember { mutableStateOf(TextFieldValue("")) }
     val scrollState = rememberScrollState()
-    val messages by viewModel.messages.collectAsStateWithLifecycle()
+    val messages by viewModel.messagesState.collectAsStateWithLifecycle()
     val onEvent = viewModel::onEvent
     val chatRoom = viewModel.chatRoomState.collectAsStateWithLifecycle()
 
@@ -44,18 +44,15 @@ fun ChatScreen(viewModel:ChatViewModel) {
                 .weight(1f),
             verticalArrangement = Arrangement.Top
         ) {
-            // Dummy messages for demonstration
-            ChatBubble("Hello!", isUser = false)
-            ChatBubble("Hi, how are you?", isUser = true)
-            ChatBubble("I'm good, thanks!", isUser = false)
-            ChatBubble("Great to hear!", isUser = true)
             Text("chatRoomId = "+chatRoom.value.chatRoom?.ownUser)
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(16.dp)
             ) {
-                items(messages) { message ->
-                    ChatBubble(message.messageText, isUser = true)
+                items(messages.messages) { message ->
+                    ChatBubble(message.messageText, isUser = if(message.userId == chatRoom.value.chatRoom?.ownUser){
+                        true
+                    }else false)
                 }
             }
         }

@@ -29,7 +29,6 @@ class ChatRepository(
     }
     suspend fun saveChatRoom(chatRoom: ChatRoom) :String {
         val chatRef = dbRef.child("chatRooms").push()
-        //val chatRef = dbRef.child("chatRooms").push()
         val id = chatRef.key
         chatRef.setValue(chatRoom)
         if(id== null) {
@@ -37,23 +36,21 @@ class ChatRepository(
         }else return id
     }
 
-    fun getAllMessagesFromChatRoomId2(chatRoomId : String): Flow<List<Message>> {
-        return dbRef.child("chatRooms").child(chatRoomId).child("messages").valueEvents.map {
-            dataSnapshot ->
-            dataSnapshot.children.mapNotNull { it.toMessage() }
-        }.scan(emptyList()) { acc, messages -> acc + messages }
-    }
     fun getAllMessagesFromChatRoomId(chatRoomId : String): Flow<List<Message>> {
-        return dbRef.child("chatRooms").child(chatRoomId)
-            .child("messages").valueEvents.map{
-                dataSnapshot->
-                dataSnapshot.children.map { it.value(Message.serializer()) }
+        val result = dbRef.child("chatRooms").child(chatRoomId)
+            .child("messages").valueEvents.mapNotNull{
+                    dataSnapshot->
+                log.i { "DataSnapshot1 = ${dataSnapshot.value}" }
+                dataSnapshot.children.map {
+                    log.i { "DataSnapshot 3 = ${it.value}" }
+                    it.value(Message.serializer()) }
             }
+        return result
     }
     suspend fun getCurrentChatRoom(chatRoomId: String):ChatRoom?{
         val path = dbRef.child("chatRooms").child(chatRoomId).key
         log.i { "path = $path" }
-        val teilErgebnis = dbRef.child("chatRooms").child(chatRoomId)
+        val result = dbRef.child("chatRooms").child(chatRoomId)
             .valueEvents
             .onEach { dataSnapshot ->
                 log.i { "DataSnapshot = ${dataSnapshot.value}" }
@@ -62,27 +59,9 @@ class ChatRepository(
                 dataSnapshot.value(ChatRoom.serializer())
             }
             .firstOrNull()
+        log.i { "teilErgebnis = $result" }
 
-        log.i { "teilErgebnis = $teilErgebnis" }
-
-        return teilErgebnis
-    }
-
-    private fun DataSnapshot.toMessage(): Message? {
-        return try {
-            val messageJson = value as String
-            Json.decodeFromString(Message.serializer(), messageJson)
-        } catch (e: Exception) {
-            null
-        }
-    }
-    private fun DataSnapshot.toChatRoom(): ChatRoom? {
-        return try {
-            val chatRoom = value as String
-            Json.decodeFromString(ChatRoom.serializer(), chatRoom)
-        } catch (e: Exception) {
-            null
-        }
+        return result
     }
 
 }
