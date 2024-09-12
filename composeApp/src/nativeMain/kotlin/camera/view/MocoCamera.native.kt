@@ -12,11 +12,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.interop.UIKitView
+import androidx.compose.ui.viewinterop.UIKitInteropProperties
+import androidx.compose.ui.viewinterop.UIKitView
 import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.CValue
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.ObjCAction
 import kotlinx.cinterop.addressOf
+import kotlinx.cinterop.sizeOf
 import kotlinx.cinterop.useContents
 import kotlinx.cinterop.usePinned
 import platform.AVFoundation.AVCaptureConnection
@@ -277,7 +280,7 @@ private fun RealDeviceCamera(
         }
     }
 
-    UIKitView(
+/*    UIKitView(
         modifier = modifier,
         background = Color.Black,
         factory = {
@@ -302,6 +305,29 @@ private fun RealDeviceCamera(
             cameraPreviewLayer.setFrame(rect)
             CATransaction.commit()
         },
+    )*/
+
+    UIKitView<CameraContainerView>(
+        factory = {
+            val dispatchGroup = dispatch_group_create()
+            val cameraContainer = CameraContainerView(cameraPreviewLayer)
+            cameraContainer.layer.addSublayer(cameraPreviewLayer)
+            cameraPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+            dispatch_group_enter(dispatchGroup)
+            dispatch_async(queue) {
+                captureSession.startRunning()
+                dispatch_group_leave(dispatchGroup)
+            }
+            dispatch_group_notify(dispatchGroup, dispatch_get_main_queue()) {
+                state.onCameraReady()
+            }
+            cameraContainer
+        },
+        modifier = modifier,
+        properties = UIKitInteropProperties(
+            isInteractive = true,
+            isNativeAccessibilityEnabled = true
+        )
     )
 }
 
@@ -422,5 +448,15 @@ actual fun MocoCamera(state: MocoCameraState, modifier: Modifier) {
         modifier = modifier.fillMaxSize().background(Color.Black),
     ) {
         AuthorizedCamera(state,Modifier.fillMaxSize())
+    }
+}
+
+@OptIn(ExperimentalForeignApi::class)
+class CameraContainerView(
+    private val cameraPreviewLayer: AVCaptureVideoPreviewLayer
+) : UIView(frame = CGRectMake(0.0, 0.0, sizeOf<CGRect>().toDouble(), sizeOf<CGRect>().toDouble())) {
+    override fun layoutSubviews() {
+        super.layoutSubviews()
+        cameraPreviewLayer.frame = this.bounds
     }
 }
