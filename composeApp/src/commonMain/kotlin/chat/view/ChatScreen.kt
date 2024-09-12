@@ -29,12 +29,16 @@ fun ChatScreen(viewModel:ChatViewModel) {
     val scrollState = rememberScrollState()
     val messages by viewModel.messages.collectAsStateWithLifecycle()
     val onEvent = viewModel::onEvent
+    val chatRoom = viewModel.chatRoomState.collectAsStateWithLifecycle()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFECECEC))
             .padding(8.dp)
     ) {
+        onEvent(ChatEvent.SaveChatRoom(chatRoom = ChatRoom(1,1,2,1)))
+        onEvent(ChatEvent.GetChatRoom)
         Column(
             modifier = Modifier
                 .weight(1f),
@@ -45,6 +49,7 @@ fun ChatScreen(viewModel:ChatViewModel) {
             ChatBubble("Hi, how are you?", isUser = true)
             ChatBubble("I'm good, thanks!", isUser = false)
             ChatBubble("Great to hear!", isUser = true)
+            Text("chatRoomId"+chatRoom.value.chatRoom?.chatRoomId)
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(16.dp)
@@ -74,7 +79,6 @@ fun ChatScreen(viewModel:ChatViewModel) {
 
             Button(
                 onClick = {
-                    onEvent(ChatEvent.SaveChatRoom(chatRoom = ChatRoom(listOf(1,2),1)))
                     onEvent(ChatEvent.SaveMessage(messageText= message.text))
                     message = TextFieldValue("")
                 },

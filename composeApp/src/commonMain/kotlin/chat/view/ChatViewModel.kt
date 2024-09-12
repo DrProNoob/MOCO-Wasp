@@ -11,26 +11,34 @@ import dev.gitlive.firebase.database.database
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.serialization.modules.serializersModuleOf
+import org.lighthousegames.logging.logging
 
 class ChatViewModel(): ViewModel() {
+    companion object {
+        val log = logging()
+    }
     val remoteDatabase = Firebase.database.apply {
-        useEmulator("192.168.178.35",9000)
+        useEmulator("192.168.178.30",9000)
     }
     val dataRef = remoteDatabase.reference()
     val chatRepository = ChatRepository(remoteDatabase)
+    //val chat = ChatRoom(listOf(1,2),1)
+    val _chatRoomState = MutableStateFlow(ChatRoomState())
+    val chatRoomState: StateFlow<ChatRoomState> = _chatRoomState.asStateFlow()
 
-    private val _chatRoom = chatRepository.getCurrentChatRoom(1)
-    //val chatRoom: StateFlow<ChatRoom> = _chatRoom
-    var chatRoomId : String=""
-    fun getChatRoomId(){
-        viewModelScope.launch{
-            chatRoomId = _chatRoom.first()
+    init{
+        viewModelScope.launch {
+            _chatRoomState.update { it.copy(chatRoom = ChatRoom(2,2,3,2)) }
         }
     }
+    var chatRoomId :String =""
+
+
+
     private val _messages = chatRepository.getAllMessagesFromChatRoomId(chatRoomId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(),emptyList())
     val messages: StateFlow<List<Message>> = _messages
 
@@ -42,19 +50,31 @@ class ChatViewModel(): ViewModel() {
             is ChatEvent.SaveChatRoom ->{
                 saveChatRoom(event.chatRoom)
             }
+            is ChatEvent.GetChatRoom ->{
+                getChatRoomId(chatRoomId)
+            }
 
         }
     }
 
     fun saveChatRoom(chatRoom: ChatRoom) {
         viewModelScope.launch {
-            chatRepository.saveChatRoom(chatRoom)
+            chatRoomId = chatRepository.saveChatRoom(chatRoom)
+            log.i { "chatRoomId = $chatRoomId" }
         }
     }
 
     fun saveMessage(message: Message) {
         viewModelScope.launch {
             chatRepository.saveMessage(message)
+        }
+    }
+    fun getChatRoomId(chatRoomId: String) {
+        viewModelScope.launch{
+            log.i { "chatRoomId 1 = ${_chatRoomState.value.chatRoom?.chatRoomId}" }
+            //chatRepository.getCurrentChatRoom("-O6WljW9dG74i-BhFaGz")
+            _chatRoomState.update { it.copy(chatRoom = chatRepository.getCurrentChatRoom("1")) }
+            log.i { "chatRoomId 2 = ${_chatRoomState.value.chatRoom?.chatRoomId}" }
         }
     }
 
