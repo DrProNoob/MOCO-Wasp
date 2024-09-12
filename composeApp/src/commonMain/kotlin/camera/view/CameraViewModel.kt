@@ -25,6 +25,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.random.Random
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 class CameraViewModel (imageDbStorage: FirebaseStorage,firebaseDatabase: FirebaseDatabase):ViewModel() {
 
@@ -39,7 +41,8 @@ class CameraViewModel (imageDbStorage: FirebaseStorage,firebaseDatabase: Firebas
 
     val storeRef = imageDbStorage.reference
     val imageRef = storeRef.child("images")
-    val uploadRef = imageRef.child("${Random.nextLong()}.jpg")
+    @OptIn(ExperimentalUuidApi::class)
+    val uploadRef = imageRef.child("${Uuid.random()}.jpg")
 
     val postDataSource = PostDataSource(userImageDatabase)
 
