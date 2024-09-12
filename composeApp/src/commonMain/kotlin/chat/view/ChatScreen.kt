@@ -37,7 +37,7 @@ fun ChatScreen(viewModel:ChatViewModel) {
             .background(Color(0xFFECECEC))
             .padding(8.dp)
     ) {
-        onEvent(ChatEvent.SaveChatRoom(chatRoom = ChatRoom(1,1,2,1)))
+        //onEvent(ChatEvent.SaveChatRoom(chatRoom = ChatRoom(1,1,2)))
         onEvent(ChatEvent.GetChatRoom)
         Column(
             modifier = Modifier
@@ -49,7 +49,7 @@ fun ChatScreen(viewModel:ChatViewModel) {
             ChatBubble("Hi, how are you?", isUser = true)
             ChatBubble("I'm good, thanks!", isUser = false)
             ChatBubble("Great to hear!", isUser = true)
-            Text("chatRoomId"+chatRoom.value.chatRoom?.chatRoomId)
+            Text("chatRoomId = "+chatRoom.value.chatRoom?.ownUser)
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(16.dp)

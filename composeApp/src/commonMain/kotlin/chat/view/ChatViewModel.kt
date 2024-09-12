@@ -32,10 +32,10 @@ class ChatViewModel(): ViewModel() {
 
     init{
         viewModelScope.launch {
-            _chatRoomState.update { it.copy(chatRoom = ChatRoom(2,2,3,2)) }
+            _chatRoomState.update { it.copy(chatRoom = ChatRoom(2,2,3)) }
         }
     }
-    var chatRoomId :String =""
+    var chatRoomId :String ="-O6_emmeFfd3WEQHaosf"
 
 
 
@@ -71,10 +71,8 @@ class ChatViewModel(): ViewModel() {
     }
     fun getChatRoomId(chatRoomId: String) {
         viewModelScope.launch{
-            log.i { "chatRoomId 1 = ${_chatRoomState.value.chatRoom?.chatRoomId}" }
             //chatRepository.getCurrentChatRoom("-O6WljW9dG74i-BhFaGz")
-            _chatRoomState.update { it.copy(chatRoom = chatRepository.getCurrentChatRoom("1")) }
-            log.i { "chatRoomId 2 = ${_chatRoomState.value.chatRoom?.chatRoomId}" }
+            _chatRoomState.update { it.copy(chatRoom = chatRepository.getCurrentChatRoom(chatRoomId)) }
         }
     }
 

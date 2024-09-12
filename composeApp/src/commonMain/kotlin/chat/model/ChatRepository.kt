@@ -28,7 +28,7 @@ class ChatRepository(
         dbRef.child("chatRooms").child(message.chatRoomId).child("messages").push().setValue(message)
     }
     suspend fun saveChatRoom(chatRoom: ChatRoom) :String {
-        val chatRef = dbRef.child("chatRooms").child(chatRoom.chatRoomId.toString())
+        val chatRef = dbRef.child("chatRooms").push()
         //val chatRef = dbRef.child("chatRooms").push()
         val id = chatRef.key
         chatRef.setValue(chatRoom)
