@@ -6,7 +6,9 @@ import chat.model.ChatEvent
 import chat.model.ChatRepository
 import chat.model.ChatRoom
 import chat.model.Message
+import core.model.User
 import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.database.FirebaseDatabase
 import dev.gitlive.firebase.database.database
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,6 +21,7 @@ import kotlinx.coroutines.launch
 import org.lighthousegames.logging.logging
 import kotlin.random.Random
 
+//class ChatViewModel(userRepository: UserRepository,remoteDatabase :FirebaseDatabase): ViewModel() {
 class ChatViewModel(): ViewModel() {
     companion object {
         val log = logging()
@@ -28,6 +31,9 @@ class ChatViewModel(): ViewModel() {
     }
     val dataRef = remoteDatabase.reference()
     val chatRepository = ChatRepository(remoteDatabase)
+
+    val user:User = User(1,"Daniel")
+    //val user:User = userRepository.getOwnUser()
     //val chat = ChatRoom(listOf(1,2),1)
     val _chatRoomState = MutableStateFlow(ChatRoomState())
     val chatRoomState: StateFlow<ChatRoomState> = _chatRoomState.asStateFlow()
@@ -35,7 +41,7 @@ class ChatViewModel(): ViewModel() {
     private val _messagesState = MutableStateFlow(MessagesState())
     val messagesState: StateFlow<MessagesState> = _messagesState.asStateFlow()
 
-    var chatRoomId :String ="-O6aEzHANfBWe3ZkFvQc"
+    var chatRoomId :String ="-O6e7R02BBJW6DePTOJF"
     init{
         viewModelScope.launch {
             _chatRoomState.update { it.copy(chatRoom = ChatRoom(2,2,3)) }

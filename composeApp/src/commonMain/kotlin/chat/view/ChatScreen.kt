@@ -26,10 +26,10 @@ import chat.model.ChatRoom
 @Composable
 fun ChatScreen(viewModel:ChatViewModel) {
     var message by remember { mutableStateOf(TextFieldValue("")) }
-    val scrollState = rememberScrollState()
     val messages by viewModel.messagesState.collectAsStateWithLifecycle()
     val onEvent = viewModel::onEvent
     val chatRoom = viewModel.chatRoomState.collectAsStateWithLifecycle()
+    val user = viewModel.user
 
     Column(
         modifier = Modifier
@@ -50,7 +50,7 @@ fun ChatScreen(viewModel:ChatViewModel) {
                 contentPadding = PaddingValues(16.dp)
             ) {
                 items(messages.messages) { message ->
-                    ChatBubble(message.messageText, isUser = if(message.userId == chatRoom.value.chatRoom?.ownUser){
+                    ChatBubble(message.messageText, isUser = if(message.userId == user.userId){
                         true
                     }else false)
                 }
