@@ -42,7 +42,7 @@ class ChatRepository(
     suspend fun setupUsers(){
         dbRef.child("users").child("daniel").setValue(User(1,"Daniel"))
         dbRef.child("users").child("leon").setValue(User(2,"Leon"))
-        dbRef.child("users").child("daniel").setValue(User(3,"Ramon"))
+        dbRef.child("users").child("ramon").setValue(User(3,"Ramon"))
     }
 
     fun getAllMessagesFromChatRoomId(chatRoomId : String): Flow<List<Message>> {
