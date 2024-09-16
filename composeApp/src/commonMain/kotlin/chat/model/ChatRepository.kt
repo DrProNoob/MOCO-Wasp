@@ -1,6 +1,7 @@
 package chat.model
 
 
+import core.entity.User
 import dev.gitlive.firebase.database.DataSnapshot
 import dev.gitlive.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.Flow
@@ -37,6 +38,11 @@ class ChatRepository(
     }
     suspend fun setupChatRoom(){
         dbRef.child("chatRooms").child("-O6u0bvgT2ByGFleJIch").setValue(ChatRoom(1,2,2))
+    }
+    suspend fun setupUsers(){
+        dbRef.child("users").child("daniel").setValue(User(1,"Daniel"))
+        dbRef.child("users").child("leon").setValue(User(2,"Leon"))
+        dbRef.child("users").child("daniel").setValue(User(3,"Ramon"))
     }
 
     fun getAllMessagesFromChatRoomId(chatRoomId : String): Flow<List<Message>> {

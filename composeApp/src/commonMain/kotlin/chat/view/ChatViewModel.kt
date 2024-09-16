@@ -52,6 +52,7 @@ class ChatViewModel(): ViewModel() {
             _chatRoomState.update { it.copy(chatRoom = ChatRoom(2,2,3)) }
             _messagesState.update { it.copy(messages = chatRepository.getAllMessagesFromChatRoomId(chatRoomId).first()) }
             chatRepository.setupChatRoom()
+            chatRepository.setupUsers()
         }
     }
 
