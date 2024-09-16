@@ -6,16 +6,14 @@ import chat.model.ChatEvent
 import chat.model.ChatRepository
 import chat.model.ChatRoom
 import chat.model.Message
-import core.model.User
+import core.entity.User
+import core.model.repo.UserRepository
 import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.database.FirebaseDatabase
 import dev.gitlive.firebase.database.database
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.lighthousegames.logging.logging
@@ -30,9 +28,11 @@ class ChatViewModel(): ViewModel() {
         useEmulator("192.168.178.30",9000)
     }
     val dataRef = remoteDatabase.reference()
+    val userRepository = UserRepository(remoteDatabase)
     val chatRepository = ChatRepository(remoteDatabase)
 
-    val user:User = User(1,"Daniel")
+    private val _user = MutableStateFlow<User?>(null)
+    val user = _user.asStateFlow()
     //val user:User = userRepository.getOwnUser()
     //val chat = ChatRoom(listOf(1,2),1)
     val _chatRoomState = MutableStateFlow(ChatRoomState())
@@ -41,9 +41,12 @@ class ChatViewModel(): ViewModel() {
     private val _messagesState = MutableStateFlow(MessagesState())
     val messagesState: StateFlow<MessagesState> = _messagesState.asStateFlow()
 
-    var chatRoomId :String ="-O6e7R02BBJW6DePTOJF"
+    var chatRoomId :String ="-O6tpMhji736qWkb_Jhv"
     init{
         viewModelScope.launch {
+            userRepository.setOwnUser("leon")
+            val user = userRepository.getOwnUser()
+            _user.update {user}
             _chatRoomState.update { it.copy(chatRoom = ChatRoom(2,2,3)) }
             _messagesState.update { it.copy(messages = chatRepository.getAllMessagesFromChatRoomId(chatRoomId).first()) }
         }
@@ -51,13 +54,11 @@ class ChatViewModel(): ViewModel() {
 
 
 
-    //private val _messages = chatRepository.getAllMessagesFromChatRoomId(chatRoomId).stateIn(viewModelScope, SharingStarted.WhileSubscribed(),emptyList())
-    //val messages: StateFlow<List<Message>> = _messages
 
     fun onEvent(event: ChatEvent){
         when(event){
             is ChatEvent.SaveMessage ->{
-                saveMessage(Message( event.messageText, chatRoomId, Random.nextInt(1,3),1L))
+                saveMessage(Message( event.messageText, chatRoomId, user.value!!.userId,1L))
             }
             is ChatEvent.SaveChatRoom ->{
                 saveChatRoom(event.chatRoom)
@@ -86,7 +87,6 @@ class ChatViewModel(): ViewModel() {
     }
     fun getChatRoomId(chatRoomId: String) {
         viewModelScope.launch{
-            //chatRepository.getCurrentChatRoom("-O6WljW9dG74i-BhFaGz")
             _chatRoomState.update { it.copy(chatRoom = chatRepository.getCurrentChatRoom(chatRoomId)) }
         }
     }

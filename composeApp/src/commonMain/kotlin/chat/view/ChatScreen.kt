@@ -37,7 +37,7 @@ fun ChatScreen(viewModel:ChatViewModel) {
             .background(Color(0xFFECECEC))
             .padding(8.dp)
     ) {
-        //onEvent(ChatEvent.SaveChatRoom(chatRoom = ChatRoom(1,1,2)))
+        //onEvent(ChatEvent.SaveChatRoom(chatRoom = ChatRoom(1,2,2)))
         onEvent(ChatEvent.GetChatRoom)
         Column(
             modifier = Modifier
@@ -50,7 +50,7 @@ fun ChatScreen(viewModel:ChatViewModel) {
                 contentPadding = PaddingValues(16.dp)
             ) {
                 items(messages.messages) { message ->
-                    ChatBubble(message.messageText, isUser = if(message.userId == user.userId){
+                    ChatBubble(message.messageText, isUser = if(message.userId == user.value?.userId){
                         true
                     }else false)
                 }
