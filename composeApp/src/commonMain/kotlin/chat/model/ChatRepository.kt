@@ -35,6 +35,9 @@ class ChatRepository(
             return ""
         }else return id
     }
+    suspend fun setupChatRoom(){
+        dbRef.child("chatRooms").child("-O6u0bvgT2ByGFleJIch").setValue(ChatRoom(1,2,2))
+    }
 
     fun getAllMessagesFromChatRoomId(chatRoomId : String): Flow<List<Message>> {
         val result = dbRef.child("chatRooms").child(chatRoomId)

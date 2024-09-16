@@ -24,8 +24,10 @@ class ChatViewModel(): ViewModel() {
     companion object {
         val log = logging()
     }
+    val host = "192.168.178.30"
+    val local = "10.0.2.2"
     val remoteDatabase = Firebase.database.apply {
-        useEmulator("192.168.178.30",9000)
+        useEmulator(local,9000)
     }
     val dataRef = remoteDatabase.reference()
     val userRepository = UserRepository(remoteDatabase)
@@ -41,14 +43,15 @@ class ChatViewModel(): ViewModel() {
     private val _messagesState = MutableStateFlow(MessagesState())
     val messagesState: StateFlow<MessagesState> = _messagesState.asStateFlow()
 
-    var chatRoomId :String ="-O6tpMhji736qWkb_Jhv"
+    var chatRoomId :String ="-O6u0bvgT2ByGFleJIch"
     init{
         viewModelScope.launch {
-            userRepository.setOwnUser("leon")
+            userRepository.setOwnUser("daniel")
             val user = userRepository.getOwnUser()
             _user.update {user}
             _chatRoomState.update { it.copy(chatRoom = ChatRoom(2,2,3)) }
             _messagesState.update { it.copy(messages = chatRepository.getAllMessagesFromChatRoomId(chatRoomId).first()) }
+            chatRepository.setupChatRoom()
         }
     }
 

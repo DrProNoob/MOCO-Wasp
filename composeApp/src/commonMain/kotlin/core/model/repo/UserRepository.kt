@@ -15,10 +15,6 @@ class UserRepository(database: FirebaseDatabase) {
         val dbUser = dbRef.child("users").child(username).valueEvents.first().value(User.serializer())
         this.ownUser = dbUser
     }
-/*    suspend fun setOwnUser(username: String) {
-        val dbUser = dbRef.child("users").child(username).setValue(User(3,username))
-        this.ownUser = User(3,username)
-    }*/
 
     fun getOwnUser(): User? {
         if (this.ownUser == null) {
