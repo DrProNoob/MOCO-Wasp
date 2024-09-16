@@ -13,6 +13,8 @@ import mocowasp.composeapp.generated.resources.compose_multiplatform
 import org.koin.compose.KoinContext
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import steps.domain.view.StepScreen
+import steps.domain.view.StepViewModel
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
@@ -25,6 +27,12 @@ fun App() {
                 composable("chat") {
                     val chatViewModel = koinViewModel<ChatViewModel>()
                     ChatScreen(chatViewModel)
+                }
+            }
+            NavHost(navigation,"step"){
+                composable("step"){
+                    val stepViewModel = koinViewModel<StepViewModel>()
+                    StepScreen(stepViewModel)
                 }
             }
         }
