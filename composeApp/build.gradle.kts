@@ -140,6 +140,7 @@ room {
 
 dependencies {
 
+
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.runtime.saveable.android)

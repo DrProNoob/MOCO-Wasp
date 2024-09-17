@@ -1,4 +1,5 @@
 [versions]
+
 agp = "8.5.2"
 android-compileSdk = "34"
 android-minSdk = "24"
@@ -93,7 +94,6 @@ firebase-android-bom = { module = "com.google.firebase:firebase-bom", version.re
 firebase-android-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics" }
 #Gitlive
 gitlive-firebase-kotlin-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase-gitlive-sdk" }
-
 
 
 [plugins]
