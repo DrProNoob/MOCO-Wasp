@@ -23,7 +23,7 @@ kotlin {
             freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -34,9 +34,9 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -89,6 +89,10 @@ kotlin {
             api("dev.gitlive:firebase-storage:2.0.0")
             //Kamel
             implementation(libs.kamel.image)
+
+            //logging
+            api(libs.logging)
+
         }
     }
 }
@@ -155,5 +159,4 @@ tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach
         dependsOn("kspCommonMainKotlinMetadata")
     }
 }
-
 
