@@ -7,6 +7,7 @@ import dev.gitlive.firebase.database.FirebaseDatabase
 import feed.model.dtos.PostDTO
 import feed.model.entity.Post
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.scan
@@ -58,13 +59,15 @@ class PostDataSource(
     }
 
     private suspend fun getUserNameById(userid: Int): String {
-        if (userid == 1) {
+/*        if (userid == 1) {
             return "User1"
-        } else {
-            return dbRef.child("users").child(userid.toString()).valueEvents.mapNotNull { dataSnapshot ->
-                dataSnapshot.value(User.serializer())
-            }.toList().first().userName
+        } else {*/
+        return dbRef.child("users").valueEvents.mapNotNull { dataSnapshot ->
+            dataSnapshot.children.map { user ->
+                user.value(User.serializer())
+            }
+        }.first().find { user -> userid == user.userId }?.userName ?: "Unknown"
 
-        }
+       // }
     }
 }

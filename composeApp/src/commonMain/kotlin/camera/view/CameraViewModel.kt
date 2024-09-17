@@ -12,6 +12,7 @@ import camera.model.entity.UserPicure
 import camera.model.entity.imageModule
 import camera.view.events.CameraEvent
 import camera.view.events.CameraPostEvent
+import core.model.repo.UserRepository
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.database.FirebaseDatabase
 import dev.gitlive.firebase.database.ServerValue
@@ -29,7 +30,7 @@ import kotlin.random.Random
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-class CameraViewModel (val navController: NavController,imageDbStorage: FirebaseStorage,firebaseDatabase: FirebaseDatabase):ViewModel() {
+class CameraViewModel (val userRepository: UserRepository,val navController: NavController,imageDbStorage: FirebaseStorage,firebaseDatabase: FirebaseDatabase):ViewModel() {
 
     val host = "192.168.178.20"
     val port = 9199
@@ -108,8 +109,11 @@ class CameraViewModel (val navController: NavController,imageDbStorage: Firebase
                         }
                     }
                     val url = uploadImage(imageStateByteArray.value!!)
-                    val post = PostDTO(userid = 1, title = title, description = description, content = CameraImageContent(imageUrl = url))
-                    postDataSource.putPost(post, imageModule)
+                    val ownUser = userRepository.getOwnUser()
+                    val post = ownUser?.let { PostDTO(userid = it.userId, title = title, description = description, content = CameraImageContent(imageUrl = url)) }
+                    if (post != null) {
+                        postDataSource.putPost(post, imageModule)
+                    }
                     _cameraPostState.update {
                         it.copy(isLoading = false)
                     }
