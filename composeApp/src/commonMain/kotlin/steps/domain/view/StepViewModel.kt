@@ -8,4 +8,17 @@ class StepViewModel(): ViewModel() {
         val log = logging()
     }
 
+    private val stepCounter: StepCounter = createStepCounter()
+
+    fun startStepCounting() {
+        stepCounter.startCounting()
+    }
+
+    fun stopStepCounting() {
+        stepCounter.stopCounting()
+    }
+
+    fun getStepCount(): Int {
+        return stepCounter.getStepCount()
+    }
 }
