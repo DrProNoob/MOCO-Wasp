@@ -1,5 +1,4 @@
-// iosMain/StepCounterIOS.kt
-import platform.Foundation.*
+
 import steps.domain.view.StepCounter
 
 class IOSStepCounter : StepCounter {

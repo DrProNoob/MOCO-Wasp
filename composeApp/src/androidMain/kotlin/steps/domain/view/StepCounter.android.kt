@@ -4,16 +4,24 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import org.lighthousegames.logging.logging
 import steps.domain.view.StepCounter
 
 class AndroidStepCounter(private val context: Context) : StepCounter, SensorEventListener {
     private var stepCount = 0
     private var sensorManager: SensorManager? = null
+    companion object {
+        val log = logging()
+    }
 
     override fun startCounting() {
+
         sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
         sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
+        if (stepSensor == null) {
+            log.i{ "Sensor is null"}
+        }
     }
 
     override fun stopCounting() {
