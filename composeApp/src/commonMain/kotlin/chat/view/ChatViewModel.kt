@@ -54,7 +54,8 @@ class ChatViewModel(userRepository: UserRepository,remoteDatabase : FirebaseData
                 _messagesState.update { it.copy(messages = messageList) }*/
             val user = userRepository.getOwnUser()
             _user.update { user }
-            val chatRoom = user?.let { ChatRoom(it.userId, 0, 0) }
+            val remoteUser = userRepository.getRemoteUser()
+            val chatRoom = user?.let { remoteUser?.let { it1 -> ChatRoom(it.userId, it1.userId, 0) } }
             saveChatRoom(chatRoom!!)
             chatRepository.getAllMessagesFromChatRoomId(chatRoomId).collect { messageList ->
                 _messagesState.update { it.copy(messages = messageList) }
