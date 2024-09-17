@@ -1,8 +1,6 @@
 package feed.view
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -13,6 +11,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,15 +27,18 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import camera.model.entity.CameraImageContent
 import camera.view.CameraButton
+import core.model.repo.ChallengeEvent
 import feed.model.entity.AbstractContent
 import feed.model.entity.Post
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import mocowasp.composeapp.generated.resources.Res
+import mocowasp.composeapp.generated.resources.shuffle
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import kotlin.random.Random
@@ -44,13 +47,34 @@ import kotlin.random.Random
 @Composable
 fun MainFeedScreen(navController: NavController,viewModel: FeedViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val stateChallenge by viewModel.challengeState.collectAsStateWithLifecycle()
+    val onChallengeEvent = viewModel::onChallengeEvent
 
     Scaffold(
-        floatingActionButton = { CameraButton(navController = navController) },
+        floatingActionButton = { FloatingActionButtonRow(navController = navController, onChallengeEvent) },
         floatingActionButtonPosition = FabPosition.Center,
     ) { paddingValues ->
         FeedContent(paddingValues, feedList = state.posts )
     }
+}
+
+@Composable
+private fun FloatingActionButtonRow(navController: NavController, onChallengeEvent: (ChallengeEvent) -> Unit) {
+    Row {
+        CameraButton(navController = navController)
+        RandomChallengeButton(onChallengeEvent)
+    }
+}
+
+@Composable
+private fun RandomChallengeButton(onChallengeEvent: (ChallengeEvent) -> Unit) {
+    FloatingActionButton(
+        onClick = {
+            onChallengeEvent(ChallengeEvent.SetChallenge)
+            onChallengeEvent(ChallengeEvent.ShowDialog)
+                  },
+        content = { Icon(painter = painterResource(Res.drawable.shuffle), null) }
+    )
 }
 
 @Composable

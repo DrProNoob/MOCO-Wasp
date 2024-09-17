@@ -9,6 +9,7 @@ import chat.model.Message
 import core.entity.User
 import core.model.repo.UserRepository
 import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.database.FirebaseDatabase
 import dev.gitlive.firebase.database.database
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,8 +20,7 @@ import kotlinx.coroutines.launch
 import org.lighthousegames.logging.logging
 import kotlin.random.Random
 
-//class ChatViewModel(userRepository: UserRepository,remoteDatabase :FirebaseDatabase): ViewModel() {
-class ChatViewModel(): ViewModel() {
+class ChatViewModel(userRepository: UserRepository,remoteDatabase : FirebaseDatabase): ViewModel() {
     companion object {
         val log = logging()
     }
@@ -28,9 +28,6 @@ class ChatViewModel(): ViewModel() {
     val local = "10.0.2.2"
     val host2 = "10.3.227.20"
     val host3 = "0.0.0.0"
-    val remoteDatabase = Firebase.database.apply {
-        useEmulator(host,9000)
-    }
     val dataRef = remoteDatabase.reference()
     val userRepository = UserRepository(remoteDatabase)
     val chatRepository = ChatRepository(remoteDatabase)
@@ -45,16 +42,21 @@ class ChatViewModel(): ViewModel() {
     private val _messagesState = MutableStateFlow(MessagesState())
     val messagesState: StateFlow<MessagesState> = _messagesState.asStateFlow()
 
-    var chatRoomId :String ="-O6uDXP5azgIqhjp43RZ"
-    init{
+    var chatRoomId :String = ""
+    init {
         viewModelScope.launch {
-            //chatRepository.setupUsers()
+/*            //chatRepository.setupUsers()
            // chatRepository.setupChatRoom()
-            userRepository.setOwnUser("daniel")
             val user = userRepository.getOwnUser()
             _user.update {user}
             _chatRoomState.update { it.copy(chatRoom = ChatRoom(2,2,3)) }
             chatRepository.getAllMessagesFromChatRoomId(chatRoomId).collect{ messageList ->
+                _messagesState.update { it.copy(messages = messageList) }*/
+            val user = userRepository.getOwnUser()
+            _user.update { user }
+            val chatRoom = user?.let { ChatRoom(it.userId, 0, 0) }
+            saveChatRoom(chatRoom!!)
+            chatRepository.getAllMessagesFromChatRoomId(chatRoomId).collect { messageList ->
                 _messagesState.update { it.copy(messages = messageList) }
             }
         }

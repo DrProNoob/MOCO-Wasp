@@ -1,14 +1,19 @@
 // File: commonMain/kotlin/auth/AuthView.kt
-package com.example.app.auth
+package auth.view
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,14 +22,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.graphics.Brush
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun AuthView(viewModel: AuthViewModel = AuthViewModel()) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+fun AuthView(navController: NavController,viewModel: AuthViewModel = koinViewModel()) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    var password = remember { "" }
+    val onEvent = viewModel::handleEvent
 
     Box(
         modifier = Modifier
@@ -55,9 +63,9 @@ fun AuthView(viewModel: AuthViewModel = AuthViewModel()) {
 
             // Email Input
             OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text("E-Mail") },
+                value = state.username,
+                onValueChange = { onEvent(AuthEvent.SetUsername(it)) },
+                label = { Text("Username") },
                 leadingIcon = {
                     Icon(imageVector = Icons.Default.Email, contentDescription = "Email Icon")
                 },
@@ -84,8 +92,11 @@ fun AuthView(viewModel: AuthViewModel = AuthViewModel()) {
 
             // Login Button
             Button(
-                onClick = { viewModel.onLoginClicked() },
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF276389)),
+                onClick = {
+                    onEvent(AuthEvent.SetOwnUser)
+                    navController.navigate("feed")
+                          },
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF276389)),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
@@ -111,8 +122,3 @@ fun AuthView(viewModel: AuthViewModel = AuthViewModel()) {
     }
 }
 
-@Preview
-@Composable
-fun PreviewAuthView() {
-    AuthView()
-}

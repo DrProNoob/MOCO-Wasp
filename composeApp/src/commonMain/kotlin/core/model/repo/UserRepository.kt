@@ -10,10 +10,28 @@ class UserRepository(database: FirebaseDatabase) {
     private val dbRef = database.reference()
 
     private var ownUser: User? = null
+    private var remoteUser: User? = null
 
-    suspend fun setOwnUser(username: String) {
+    private var allUsersWithoutOwnUser = emptyList<User>()
+
+    fun setRemoteUser(username: String) {
+        this.remoteUser = allUsersWithoutOwnUser.find { user ->
+            username == user.userName
+        }
+    }
+
+    fun getRemoteUser(): User? {
+        return this.remoteUser
+    }
+
+    fun getAllUsersWithoutOwnUser(): List<User> {
+        return allUsersWithoutOwnUser
+    }
+
+    suspend fun setOwnUser(username: String): User {
         val dbUser = dbRef.child("users").child(username).valueEvents.first().value(User.serializer())
         this.ownUser = dbUser
+        return dbUser
     }
 
     fun getOwnUser(): User? {
@@ -24,8 +42,10 @@ class UserRepository(database: FirebaseDatabase) {
     }
 
     suspend fun getAllUsers(): List<User> {
-        return dbRef.child("users").valueEvents.mapNotNull { dataSnapshot ->
+        val allUsers = dbRef.child("users").valueEvents.mapNotNull { dataSnapshot ->
             dataSnapshot.value(User.serializer())
         }.toList()
+        allUsersWithoutOwnUser = allUsers.filter { user -> user != this.ownUser }
+        return allUsers
     }
 }
