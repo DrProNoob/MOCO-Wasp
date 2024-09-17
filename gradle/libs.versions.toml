@@ -11,14 +11,15 @@ androidx-espresso-core = "3.6.1"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
 calfPermissions = "0.5.4"
-compose-plugin = "1.6.10"
+compose-plugin = "1.7.0-beta02"
 junit = "4.13.2"
 kamelImage = "0.9.5"
 kotlin = "2.0.20"
 
-koin = "3.6.0-Beta4"
-koinComposeMultiplatform = "1.2.0-Beta4"
+
 logging = "1.5.0"
+koin = "4.0.0-RC2"
+koinComposeMultiplatform = "4.0.0-RC2"
 navigationCompose = "2.8.0-alpha08"
 lifecycleViewModel = "2.8.4"
 ktor-client = "2.3.7"
@@ -39,7 +40,6 @@ gradlePlugins-crashlytics = "2.9.9"
 gradlePlugins-google-services = "4.4.1"
 #Gitlive
 firebase-gitlive-sdk = "2.0.0"
-media3CommonKtx = "1.4.1"
 
 
 [libraries]
@@ -93,7 +93,7 @@ firebase-android-bom = { module = "com.google.firebase:firebase-bom", version.re
 firebase-android-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics" }
 #Gitlive
 gitlive-firebase-kotlin-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebase-gitlive-sdk" }
-androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
+
 
 
 [plugins]

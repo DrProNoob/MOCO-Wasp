@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.androidApplication)	
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
@@ -89,8 +89,10 @@ kotlin {
             api("dev.gitlive:firebase-storage:2.0.0")
             //Kamel
             implementation(libs.kamel.image)
+
             //logging
             api(libs.logging)
+
         }
     }
 }
@@ -157,3 +159,4 @@ tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach
         dependsOn("kspCommonMainKotlinMetadata")
     }
 }
+
