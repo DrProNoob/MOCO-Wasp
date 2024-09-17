@@ -3,6 +3,7 @@ package camera.view
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import camera.Util.byteToData
 import camera.Util.compressImage
 import camera.Util.toImageBitmap
@@ -28,7 +29,7 @@ import kotlin.random.Random
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-class CameraViewModel (imageDbStorage: FirebaseStorage,firebaseDatabase: FirebaseDatabase):ViewModel() {
+class CameraViewModel (val navController: NavController,imageDbStorage: FirebaseStorage,firebaseDatabase: FirebaseDatabase):ViewModel() {
 
     val host = "192.168.178.20"
     val port = 9199

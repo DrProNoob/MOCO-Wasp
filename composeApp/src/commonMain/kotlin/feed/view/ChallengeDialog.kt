@@ -25,7 +25,6 @@ fun ChallengeDialog(
     onEvent: (ChallengeEvent) -> Unit
 ) {
 
-    val openDialog = remember { mutableStateOf(false) }
 
     Dialog(
         onDismissRequest = { onEvent(ChallengeEvent.HideDialog) },
@@ -41,7 +40,7 @@ private fun DialogContent(challengeState: ChallengeState,onEvent: (ChallengeEven
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

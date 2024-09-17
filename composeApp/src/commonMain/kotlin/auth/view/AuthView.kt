@@ -29,10 +29,11 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun AuthView(navController: NavController,viewModel: AuthViewModel = koinViewModel()) {
+fun AuthView(viewModel: AuthViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var password = remember { "" }
     val onEvent = viewModel::handleEvent
+    val navController = viewModel.navController
 
     Box(
         modifier = Modifier

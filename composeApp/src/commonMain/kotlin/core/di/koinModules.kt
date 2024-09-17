@@ -4,6 +4,7 @@ import camera.view.CameraViewModel
 import chat.view.ChatViewModel
 import auth.view.AuthViewModel
 import chat.model.ChatRepository
+import core.model.repo.ChallengeRepo
 import core.model.repo.UserRepository
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.database.database
@@ -24,6 +25,7 @@ val sharedModule = module {
             useEmulator(host = "192.168.178.20", port = 9000)
         }
     }
+    singleOf(::ChallengeRepo)
     singleOf(::UserRepository)
     singleOf(::ChatRepository)
     viewModelOf(::AuthViewModel)

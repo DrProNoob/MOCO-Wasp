@@ -28,10 +28,11 @@ import org.koin.core.annotation.KoinExperimentalAPI
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun CameraMainView(navController: NavController, viewModel: CameraViewModel = koinViewModel()) {
+fun CameraMainView(viewModel: CameraViewModel = koinViewModel()) {
 
     val state = rememberMocoCameraState(onCapture = viewModel::onCapture)
     val image by viewModel.imageStateBitmap.collectAsState()
+    val navController = viewModel.navController
 
     val isTorchOn = state.isTorchOn
 

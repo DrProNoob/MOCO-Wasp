@@ -43,8 +43,10 @@ class UserRepository(database: FirebaseDatabase) {
 
     suspend fun getAllUsers(): List<User> {
         val allUsers = dbRef.child("users").valueEvents.mapNotNull { dataSnapshot ->
-            dataSnapshot.value(User.serializer())
-        }.toList()
+            dataSnapshot.children.map { user ->
+                user.value(User.serializer())
+            }
+        }.first()
         allUsersWithoutOwnUser = allUsers.filter { user -> user != this.ownUser }
         return allUsers
     }

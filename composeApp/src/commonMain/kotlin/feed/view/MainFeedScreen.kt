@@ -45,10 +45,15 @@ import kotlin.random.Random
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun MainFeedScreen(navController: NavController,viewModel: FeedViewModel = koinViewModel()) {
+fun MainFeedScreen(viewModel: FeedViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val stateChallenge by viewModel.challengeState.collectAsStateWithLifecycle()
     val onChallengeEvent = viewModel::onChallengeEvent
+    val navController = viewModel.navController
+
+    if (stateChallenge.showDialog) {
+        ChallengeDialog(stateChallenge, onChallengeEvent)
+    }
 
     Scaffold(
         floatingActionButton = { FloatingActionButtonRow(navController = navController, onChallengeEvent) },
