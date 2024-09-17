@@ -49,10 +49,15 @@ class ChatRepository(
         val result = dbRef.child("chatRooms").child(chatRoomId)
             .child("messages").valueEvents.mapNotNull{
                     dataSnapshot->
-                log.i { "DataSnapshot1 = ${dataSnapshot.value}" }
-                dataSnapshot.children.map {
-                    log.i { "DataSnapshot 3 = ${it.value}" }
-                    it.value(Message.serializer()) }
+                if(dataSnapshot.exists){
+                    log.i { "DataSnapshot1 = ${dataSnapshot.value}" }
+                    dataSnapshot.children.map {
+                        log.i { "DataSnapshot 3 = ${it.value}" }
+                        it.value(Message.serializer()) }
+                }else{
+                    log.i { "No messages found" }
+                    emptyList<Message>()
+                }
             }
         return result
     }

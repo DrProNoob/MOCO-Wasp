@@ -55,11 +55,14 @@ class ChatViewModel(userRepository: UserRepository,remoteDatabase : FirebaseData
             val user = userRepository.getOwnUser()
             _user.update { user }
             val remoteUser = userRepository.getRemoteUser()
-            val chatRoom = user?.let { remoteUser?.let { it1 -> ChatRoom(it.userId, it1.userId, 0) } }
-            saveChatRoom(chatRoom!!)
+            val chatRoom = user?.let { remoteUser?.let { it1 -> ChatRoom(it.userId, it1.userId, 1) } }
+            chatRoomId = chatRepository.saveChatRoom(chatRoom!!)
+            log.i{"chatRoomId = $chatRoomId"}
+            //saveMessage(Message( "", chatRoomId, user.userId,1L))
             chatRepository.getAllMessagesFromChatRoomId(chatRoomId).collect { messageList ->
                 _messagesState.update { it.copy(messages = messageList) }
             }
+            log.i{"chatRoomId = $chatRoomId"}
         }
     }
 
@@ -84,7 +87,7 @@ class ChatViewModel(userRepository: UserRepository,remoteDatabase : FirebaseData
     fun saveChatRoom(chatRoom: ChatRoom) {
         viewModelScope.launch {
             chatRoomId = chatRepository.saveChatRoom(chatRoom)
-            log.i { "chatRoomId = $chatRoomId" }
+            //log.i { "chatRoomId = $chatRoomId" }
         }
     }
 

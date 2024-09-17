@@ -38,7 +38,7 @@ fun ChatScreen(viewModel:ChatViewModel) {
             .padding(8.dp)
     ) {
         //onEvent(ChatEvent.SaveChatRoom(chatRoom = ChatRoom(1,2,2)))
-        onEvent(ChatEvent.GetChatRoom)
+        //onEvent(ChatEvent.GetChatRoom)
         Column(
             modifier = Modifier
                 .weight(1f),
