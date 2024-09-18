@@ -2,7 +2,7 @@ package steps.domain.view
 
 class IOSStepCounter():StepCounter {
 
-    override fun startCounting() {
+    override suspend fun startCounting() {
         TODO("Not yet implemented")
     }
 

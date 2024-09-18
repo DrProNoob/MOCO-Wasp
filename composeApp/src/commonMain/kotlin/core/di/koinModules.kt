@@ -8,6 +8,6 @@ import steps.domain.view.StepCounter
 import steps.domain.view.StepViewModel
 
 val sharedModule = module {
-    viewModelOf(::ChatViewModel)
+    //viewModelOf(::ChatViewModel)
     viewModelOf(::StepViewModel)
 }

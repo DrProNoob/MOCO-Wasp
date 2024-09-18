@@ -141,8 +141,6 @@ dependencies {
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.runtime.saveable.android)
-    implementation(project(":composeApp"))
-    implementation(project(":composeApp"))
     // Room
     add("kspCommonMainMetadata", libs.room.compiler)
     // permission

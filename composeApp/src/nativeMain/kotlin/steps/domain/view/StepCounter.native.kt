@@ -4,7 +4,7 @@ import steps.domain.view.StepCounter
 class IOSStepCounter : StepCounter {
     private val iosStepCounter = IOSStepCounter()
 
-    override fun startCounting() {
+    override suspend fun startCounting() {
         iosStepCounter.startCounting()
     }
 
