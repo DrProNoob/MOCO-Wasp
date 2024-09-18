@@ -2,6 +2,7 @@ package chat.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import chat.model.ChatEvent
 import chat.model.ChatRepository
 import chat.model.ChatRoom
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 import org.lighthousegames.logging.logging
 import kotlin.random.Random
 
-class ChatViewModel(userRepository: UserRepository,remoteDatabase : FirebaseDatabase): ViewModel() {
+class ChatViewModel(val navController: NavController,userRepository: UserRepository,remoteDatabase : FirebaseDatabase): ViewModel() {
     companion object {
         val log = logging()
     }
@@ -54,11 +55,15 @@ class ChatViewModel(userRepository: UserRepository,remoteDatabase : FirebaseData
                 _messagesState.update { it.copy(messages = messageList) }*/
             val user = userRepository.getOwnUser()
             _user.update { user }
-            val chatRoom = user?.let { ChatRoom(it.userId, 0, 0) }
-            saveChatRoom(chatRoom!!)
+            val remoteUser = userRepository.getRemoteUser()
+            val chatRoom = user?.let { remoteUser?.let { it1 -> ChatRoom(it.userId, it1.userId, 1) } }
+            chatRoomId = chatRepository.saveChatRoom(chatRoom!!)
+            log.i{"chatRoomId = $chatRoomId"}
+            //saveMessage(Message( "", chatRoomId, user.userId,1L))
             chatRepository.getAllMessagesFromChatRoomId(chatRoomId).collect { messageList ->
                 _messagesState.update { it.copy(messages = messageList) }
             }
+            log.i{"chatRoomId = $chatRoomId"}
         }
     }
 
@@ -83,7 +88,7 @@ class ChatViewModel(userRepository: UserRepository,remoteDatabase : FirebaseData
     fun saveChatRoom(chatRoom: ChatRoom) {
         viewModelScope.launch {
             chatRoomId = chatRepository.saveChatRoom(chatRoom)
-            log.i { "chatRoomId = $chatRoomId" }
+            //log.i { "chatRoomId = $chatRoomId" }
         }
     }
 
