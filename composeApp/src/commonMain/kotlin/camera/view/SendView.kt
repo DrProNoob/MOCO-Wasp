@@ -2,12 +2,14 @@ package camera.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
@@ -28,6 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -48,9 +52,16 @@ fun SendView(navController: NavController,viewModel: CameraViewModel = koinViewM
     val onEvent = viewModel::handleCameraPostEvent
     val resetImage = viewModel::resetImage
 
+    val localFocusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier.fillMaxSize()
-            .background(color = Color.Black),
+            .background(color = Color.Black)
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    localFocusManager.clearFocus()
+                })
+            },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -63,7 +74,8 @@ fun SendView(navController: NavController,viewModel: CameraViewModel = koinViewM
 @Composable
 private fun SendContent(sendImage: ImageBitmap, onEvent: (CameraPostEvent) -> Unit, state: CameraPostState, onResetImage: () -> Unit, navController: NavController) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
+            .imePadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
