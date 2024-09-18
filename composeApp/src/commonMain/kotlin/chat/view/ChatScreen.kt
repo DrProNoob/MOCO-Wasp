@@ -45,7 +45,7 @@ fun ChatScreen(viewModel:ChatViewModel) {
                 .weight(1f),
             verticalArrangement = Arrangement.Top
         ) {
-            Text("chatRoomId = "+chatRoom.value.chatRoom?.ownUser)
+      //      Text("chatRoomId = ${chatRoom.value.chatRoom.ownUser} ")
             Button(
                 onClick = { navController.popBackStack() }
             ){

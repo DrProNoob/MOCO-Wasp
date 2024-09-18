@@ -47,7 +47,9 @@ class UserRepository(database: FirebaseDatabase) {
                 user.value(User.serializer())
             }
         }.first()
-        allUsersWithoutOwnUser = allUsers.filter { user -> user != this.ownUser }
+        allUsersWithoutOwnUser = allUsers.filter { user ->
+            user.userName != (this.ownUser?.userName ?: "")
+        }
         return allUsers
     }
 }

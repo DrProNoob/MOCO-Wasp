@@ -25,6 +25,7 @@ class AuthViewModel(val navController: NavController,userRepository: UserReposit
                 val userName = state.value.username
                 viewModelScope.launch {
                     ownUser = repository.setOwnUser(userName)
+                    repository.getAllUsers()
                     }
                     _state.update {
                         it.copy(ownUser = ownUser)
@@ -35,9 +36,7 @@ class AuthViewModel(val navController: NavController,userRepository: UserReposit
                     _state.update {
                         it.copy(username = event.username)
                     }
-                    repository.getAllUsers()
                 }
-
             }
         }
     }
