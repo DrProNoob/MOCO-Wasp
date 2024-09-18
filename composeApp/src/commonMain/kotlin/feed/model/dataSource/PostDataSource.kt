@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import kotlin.math.log
 
 class PostDataSource(
     private val firebaseDatabase: FirebaseDatabase
@@ -23,7 +24,7 @@ class PostDataSource(
     private val dbRef = firebaseDatabase.reference()
 
     suspend fun putPost(post: PostDTO, serializersModule: SerializersModule) {
-        dbRef.child("posts").push().setValue(post) {
+       dbRef.child("posts").push().setValue(post) {
             encodeDefaults = true
             this.serializersModule = serializersModule
         }

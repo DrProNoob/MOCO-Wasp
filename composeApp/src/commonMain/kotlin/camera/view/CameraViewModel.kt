@@ -32,9 +32,7 @@ import kotlin.uuid.Uuid
 
 class CameraViewModel (val userRepository: UserRepository,val navController: NavController,imageDbStorage: FirebaseStorage,firebaseDatabase: FirebaseDatabase):ViewModel() {
 
-    val host = "192.168.178.20"
-    val port = 9199
-    val local = "10.0.2.2"
+
 
     val userImageDatabase = firebaseDatabase
     val realtimeDatabase = userImageDatabase.reference()

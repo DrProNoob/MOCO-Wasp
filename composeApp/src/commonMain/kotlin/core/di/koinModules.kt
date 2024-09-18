@@ -17,7 +17,7 @@ import org.koin.dsl.module
 val sharedModule = module {
     single {
         Firebase.storage.apply {
-            useEmulator(host = "192.168.178.20", port = 9000)
+            useEmulator(host = "192.168.178.20", port = 9199)
         }
     }
     single {
