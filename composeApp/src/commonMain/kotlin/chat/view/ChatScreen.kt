@@ -30,6 +30,7 @@ fun ChatScreen(viewModel:ChatViewModel) {
     val onEvent = viewModel::onEvent
     val chatRoom = viewModel.chatRoomState.collectAsStateWithLifecycle()
     val user = viewModel.user
+    val navController = viewModel.navController
 
     Column(
         modifier = Modifier
@@ -45,6 +46,11 @@ fun ChatScreen(viewModel:ChatViewModel) {
             verticalArrangement = Arrangement.Top
         ) {
             Text("chatRoomId = "+chatRoom.value.chatRoom?.ownUser)
+            Button(
+                onClick = { navController.popBackStack() }
+            ){
+                Text("Back")
+            }
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(16.dp)

@@ -2,6 +2,7 @@ package chat.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import chat.model.ChatEvent
 import chat.model.ChatRepository
 import chat.model.ChatRoom
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 import org.lighthousegames.logging.logging
 import kotlin.random.Random
 
-class ChatViewModel(userRepository: UserRepository,remoteDatabase : FirebaseDatabase): ViewModel() {
+class ChatViewModel(val navController: NavController,userRepository: UserRepository,remoteDatabase : FirebaseDatabase): ViewModel() {
     companion object {
         val log = logging()
     }

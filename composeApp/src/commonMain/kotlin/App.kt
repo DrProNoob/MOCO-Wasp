@@ -29,7 +29,8 @@ fun App() {
             val navigation = rememberNavController()
             NavHost(navigation, "auth") {
                 composable("chat") {
-                    val chatViewModel = koinViewModel<ChatViewModel>()
+                    val chatViewModel = koinViewModel<ChatViewModel>(){
+                        parametersOf(navigation) }
                     ChatScreen(chatViewModel)
                 }
                 composable("auth") {
