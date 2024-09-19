@@ -61,7 +61,7 @@ class ChatRepository(
             }
         return result
     }
-    suspend fun getChatRoomByUserId(remoteUserId: Int,ownUserId :Int):ChatRoom?{
+    suspend fun getChatRoomByUserId(remoteUserId: Int, ownUserId :Int):ChatRoom?{
         val result = dbRef.child("chatRooms").valueEvents.mapNotNull { dataSnapshot ->
             dataSnapshot.children.map { chatRoom ->
                 chatRoom.value(ChatRoom.serializer())
@@ -73,18 +73,25 @@ class ChatRepository(
         return result
     }
 
-    suspend fun getCurrentChatRoomId(chatRoom: ChatRoom):String?{
-        var chatRoomId: String? = ""
-        val path = dbRef.child("chatRooms").valueEvents.mapNotNull { dataSnapshot ->
-            dataSnapshot.children.map { cchatRoom ->
-                cchatRoom.value(ChatRoom.serializer())
-                if (cchatRoom.value(ChatRoom.serializer()) == chatRoom) {
-                    chatRoomId = cchatRoom.key
-                }
-            }
+//    fun getCurrentChatRoomId1(chatRoom: ChatRoom):String?{
+//        var chatRoomId: String? = ""
+//        val path = dbRef.child("chatRooms").valueEvents.mapNotNull { dataSnapshot ->
+//            dataSnapshot.children.map { cchatRoom ->
+//                val fetchedChatRoom = cchatRoom.value(ChatRoom.serializer())
+//                if (fetchedChatRoom == chatRoom) {
+//                    chatRoomId = cchatRoom.key
+//                }
+//            }
+//        }
+//        return chatRoomId
+//    }
 
-        }
-        return chatRoomId
+    suspend fun getCurrentChatRoomId(chatRoom: ChatRoom): String? {
+        return dbRef.child("chatRooms").valueEvents.mapNotNull { dataSnapshot ->
+            dataSnapshot.children.find { child ->
+                val fetchedChatRoom = child.value(ChatRoom.serializer())
+                fetchedChatRoom == chatRoom
+            }?.key
+        }.first() // Collect the first matching result
     }
-
 }

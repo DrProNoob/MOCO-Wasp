@@ -37,6 +37,7 @@ class ChatViewModel(val navController: NavController,userRepository: UserReposit
     private val _user = MutableStateFlow<User?>(null)
     val user = _user.asStateFlow()
 
+    //charRoomState wird momentan nicht richtig gesetzt
     val _chatRoomState = MutableStateFlow(ChatRoomState())
     val chatRoomState: StateFlow<ChatRoomState> = _chatRoomState.asStateFlow()
 
@@ -44,9 +45,7 @@ class ChatViewModel(val navController: NavController,userRepository: UserReposit
     val messagesState: StateFlow<MessagesState> = _messagesState.asStateFlow()
 
     var chatRoomId :String? = ""
-    var chatRoomWithRemoteUser : ChatRoom? =null
-    var user1: User? = null
-    var remoteUser: User? = null
+
     init {
         viewModelScope.launch {
             //chatRepository.setupUsers()
@@ -57,35 +56,29 @@ class ChatViewModel(val navController: NavController,userRepository: UserReposit
             chatRepository.getAllMessagesFromChatRoomId(chatRoomId).collect{ messageList ->
                 _messagesState.update { it.copy(messages = messageList) }*/
 
-            user1 = userRepository.getOwnUser()
-            _user.update { user1 }
-            remoteUser = userRepository.getRemoteUser()
-            chatRoomWithRemoteUser =  getChatRoomByUserId(remoteUser!!.userId,user.value!!.userId)
-        }
-        viewModelScope.launch {
-            delay(10000)
+            val user = userRepository.getOwnUser()
+            _user.update { user }
+            val remoteUser = userRepository.getRemoteUser()
+            val chatRoomWithRemoteUser =  chatRepository.getChatRoomByUserId(remoteUser!!.userId,user!!.userId)
             log.i{"chatRoomWithRemoteUser = $chatRoomWithRemoteUser"}
             if(chatRoomWithRemoteUser == null){
-                val chatRoom = user?.let { remoteUser?.let { it1 -> ChatRoom(it.value!!.userId, it1.userId, 1) } }
-                chatRoomId = chatRepository.saveChatRoom(chatRoom!!)
+                val chatRoom = user.let { remoteUser.let { it1 -> ChatRoom(it.userId, it1.userId, 1) } }
+                chatRoomId = chatRepository.saveChatRoom(chatRoom)
                 log.i{"chatRoomId = $chatRoomId"}
                 //saveMessage(Message( "", chatRoomId, user.userId,1L))
                 chatRepository.getAllMessagesFromChatRoomId(chatRoomId!!).collect { messageList ->
                     _messagesState.update { it.copy(messages = messageList) }
                 }
             }else{
-                chatRoomId =  chatRepository.getCurrentChatRoomId(chatRoomWithRemoteUser!!)
+                chatRoomId =  chatRepository.getCurrentChatRoomId(chatRoomWithRemoteUser)
                 chatRoomId?.let {
                     chatRepository.getAllMessagesFromChatRoomId(it).collect { messageList ->
                         _messagesState.update { it.copy(messages = messageList) }
                     }
                 }
             }
-
-
             log.i{"chatRoomId = $chatRoomId"}
         }
-
     }
 
 
@@ -126,7 +119,6 @@ class ChatViewModel(val navController: NavController,userRepository: UserReposit
         viewModelScope.launch{
             result =  chatRepository.getChatRoomByUserId(remoteUserId,ownUserId)
             _chatRoomState.update { it.copy(chatRoom = result) }
-
         }
         return result
     }
