@@ -10,10 +10,14 @@ import org.lighthousegames.logging.Log
 import org.lighthousegames.logging.logging
 import steps.domain.view.StepCounter
 import kotlin.coroutines.resume
+import android.os.Handler
+import android.os.Looper
 
 class AndroidStepCounter(private val context: Context) : StepCounter, SensorEventListener {
     private var stepCount = 0
     private var sensorManager: SensorManager? = null
+
+    private val handler = Handler(Looper.getMainLooper())
     companion object {
         val log = logging()
     }
@@ -26,8 +30,14 @@ class AndroidStepCounter(private val context: Context) : StepCounter, SensorEven
         }else {
             sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
 
-
         }
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                Log.d("MainActivity", "Schritte seit Neustart: $stepCount")
+                // Wiederhole die Abfrage nach 15 Sekunden
+                handler.postDelayed(this, 15000)
+            }
+        }, 15000)
 
 
     }
@@ -63,11 +73,8 @@ class AndroidStepCounter(private val context: Context) : StepCounter, SensorEven
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        if (event != null) {
+        if (event?.sensor?.type == Sensor.TYPE_STEP_COUNTER) {
             stepCount = event.values[0].toInt()
-            log.i{ "on SensorChanged steps: $stepCount"}
-        }else{
-            log.i{ "Event is null"}
         }
     }
 

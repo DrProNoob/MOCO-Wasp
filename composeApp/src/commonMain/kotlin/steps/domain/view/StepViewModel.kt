@@ -8,10 +8,21 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.lighthousegames.logging.logging
+import steps.domain.model.StepEvent
 
 class StepViewModel(private val stepCounter: StepCounter) : ViewModel() {
     companion object {
         val log = logging()
+    }
+    fun onEvent(event: StepEvent) {
+        when (event) {
+            is StepEvent.StartCounting -> startStepCounting()
+            is StepEvent.StopCounting -> stopStepCounting()
+            is StepEvent.StepsCounted -> {
+                _counterState.value = stepCounter.getStepCount()
+                _counterState.update { stepCounter.getStepCount() }
+            }
+        }
     }
 
     private val _counterState = MutableStateFlow(stepCounter.getStepCount())
@@ -19,8 +30,6 @@ class StepViewModel(private val stepCounter: StepCounter) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            startStepCounting()
-            log.i{counterState.value}
             _counterState.update { stepCounter.getStepCount() }
         }
     }
