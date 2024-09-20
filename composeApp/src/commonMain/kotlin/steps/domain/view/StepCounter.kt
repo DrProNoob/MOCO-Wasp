@@ -1,7 +1,7 @@
 package steps.domain.view
 
 interface StepCounter {
-    fun startCounting()
+    suspend fun startCounting()
     fun stopCounting()
     fun getStepCount(): Int
 }

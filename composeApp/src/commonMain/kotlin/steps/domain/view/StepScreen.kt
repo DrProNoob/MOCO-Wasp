@@ -33,6 +33,7 @@ fun StepScreen(viewModel: StepViewModel) {
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text("Gemachte schritte: ${count.value}")
+        Text("Ziel: 3000")
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = { onEvent(StepEvent.StepsCounted) }) {
             Text("Lade Schritte")
