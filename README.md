@@ -21,7 +21,7 @@ Für Android war die Integration der Kamera etwas einfacher, da es dafür ausrei
 
 
 ## Architektur
-Die App Architektur basiert auf Model-View-ViewModel Architektur. Wir haben Firebase Realtime Database als Datenbank verwendet und Firebase Storage um die kompriemierten Fotos abzuspeichern.
+Die App-Architektur basiert auf der Model-View-ViewModel-Architektur. Wir haben die Firebase Realtime Database als Datenbank verwendet und Firebase Storage, um die komprimierten Fotos zu speichern.
 
 ![ArchitekturImage](https://github.com/DrProNoob/MOCO-Wasp/blob/main/gitAsstets/Architektur.jpg)
 
