@@ -1,0 +1,87 @@
+[debug] [2024-09-18T17:31:52.705Z] ----------------------------------------------------------------------
+[debug] [2024-09-18T17:31:52.708Z] Command:       /usr/local/bin/node /usr/local/bin/firebase emulators:start
+[debug] [2024-09-18T17:31:52.708Z] CLI Version:   13.16.0
+[debug] [2024-09-18T17:31:52.709Z] Platform:      darwin
+[debug] [2024-09-18T17:31:52.709Z] Node Version:  v20.11.1
+[debug] [2024-09-18T17:31:52.709Z] Time:          Wed Sep 18 2024 19:31:52 GMT+0200 (Central European Summer Time)
+[debug] [2024-09-18T17:31:52.709Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-09-18T17:31:52.711Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2024-09-18T17:31:52.815Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-09-18T17:31:52.816Z] > authorizing via signed-in user (cooler0221@googlemail.com)
+[debug] [2024-09-18T17:31:52.891Z] openjdk version "17.0.11" 2024-04-16
+
+[debug] [2024-09-18T17:31:52.892Z] OpenJDK Runtime Environment JBR-17.0.11+1-1312.2-nomod (build 17.0.11+1-b1312.2)
+OpenJDK 64-Bit Server VM JBR-17.0.11+1-1312.2-nomod (build 17.0.11+1-b1312.2, mixed mode, sharing)
+
+[debug] [2024-09-18T17:31:52.896Z] Parsed Java major version: 17
+[info] i  emulators: Starting emulators: database, storage {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: database, storage"}}
+[debug] [2024-09-18T17:31:53.756Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-09-18T17:31:53.756Z] assigned listening specs for emulators {"user":{"database":[{"address":"0.0.0.0","family":"IPv4","port":9000}],"storage":[{"address":"0.0.0.0","family":"IPv4","port":9199}],"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2024-09-18T17:31:53.760Z] [hub] writing locator at /var/folders/1_/k68b6h0d3zq0mc0g_1vs_b7m0000gn/T/hub-moco-wasp.json
+[debug] [2024-09-18T17:31:53.768Z] > refreshing access token with scopes: []
+[debug] [2024-09-18T17:31:53.769Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-09-18T17:31:53.770Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-09-18T17:31:53.882Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-09-18T17:31:53.882Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-09-18T17:31:53.934Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/moco-wasp [none]
+[debug] [2024-09-18T17:31:53.939Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2024-09-18T17:31:53.940Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2024-09-18T17:31:54.247Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/moco-wasp 200
+[debug] [2024-09-18T17:31:54.248Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/moco-wasp {"projectId":"moco-wasp","projectNumber":"859200320525","displayName":"MOCO-Wasp","name":"projects/moco-wasp","resources":{"hostingSite":"moco-wasp","realtimeDatabaseInstance":"moco-wasp-default-rtdb","storageBucket":"moco-wasp.appspot.com","locationId":"europe-west"},"state":"ACTIVE","etag":"1_54950170-4d85-4137-a6e6-ff2af25cd4d4"}
+[debug] [2024-09-18T17:31:54.249Z] database rules config:  [{"instance":"moco-wasp-default-rtdb","rules":"/Users/danielmentjukov/Downloads/firebaseEmulator/database.rules.json"}]
+[debug] [2024-09-18T17:31:54.253Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: projectId"}}
+[debug] [2024-09-18T17:31:54.253Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2024-09-18T17:31:54.253Z] Ignoring unsupported arg: rules {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: rules"}}
+[debug] [2024-09-18T17:31:54.253Z] Starting Database Emulator with command {"binary":"java","args":["-Duser.language=en","-jar","/Users/danielmentjukov/.cache/firebase/emulators/firebase-database-emulator-v4.11.2.jar","--host","0.0.0.0","--port",9000,"--single_project_mode","Warning"],"optionalArgs":["port","host","functions_emulator_port","functions_emulator_host","single_project_mode"],"joinArgs":false,"shell":false} {"metadata":{"emulator":{"name":"database"},"message":"Starting Database Emulator with command {\"binary\":\"java\",\"args\":[\"-Duser.language=en\",\"-jar\",\"/Users/danielmentjukov/.cache/firebase/emulators/firebase-database-emulator-v4.11.2.jar\",\"--host\",\"0.0.0.0\",\"--port\",9000,\"--single_project_mode\",\"Warning\"],\"optionalArgs\":[\"port\",\"host\",\"functions_emulator_port\",\"functions_emulator_host\",\"single_project_mode\"],\"joinArgs\":false,\"shell\":false}"}}
+[info] i  database: Database Emulator logging to database-debug.log {"metadata":{"emulator":{"name":"database"},"message":"Database Emulator logging to \u001b[1mdatabase-debug.log\u001b[22m"}}
+[debug] [2024-09-18T17:31:55.626Z] 19:31:55.624 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+ {"metadata":{"emulator":{"name":"database"},"message":"19:31:55.624 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started\n"}}
+[debug] [2024-09-18T17:31:55.826Z] 19:31:55.826 [main] INFO com.firebase.server.forge.App$ - Listening at 0.0.0.0:9000
+ {"metadata":{"emulator":{"name":"database"},"message":"19:31:55.826 [main] INFO com.firebase.server.forge.App$ - Listening at 0.0.0.0:9000\n"}}
+[debug] [2024-09-18T17:31:56.072Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"storage"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2024-09-18T17:31:56.948Z] Temp file directory for storage emulator: /var/folders/1_/k68b6h0d3zq0mc0g_1vs_b7m0000gn/T/firebase/storage/blobs {"metadata":{"emulator":{"name":"storage"},"message":"Temp file directory for storage emulator: /var/folders/1_/k68b6h0d3zq0mc0g_1vs_b7m0000gn/T/firebase/storage/blobs"}}
+[debug] [2024-09-18T17:31:56.954Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2024-09-18T17:31:56.954Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2024-09-18T17:31:56.954Z] Starting Emulator UI with command {"binary":"node","args":["/Users/danielmentjukov/.cache/firebase/emulators/ui-v1.13.0/server/server.mjs"],"optionalArgs":[],"joinArgs":false,"shell":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"/Users/danielmentjukov/.cache/firebase/emulators/ui-v1.13.0/server/server.mjs\"],\"optionalArgs\":[],\"joinArgs\":false,\"shell\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2024-09-18T17:31:57.098Z] Web / API server started at 127.0.0.1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at 127.0.0.1:4000\n"}}
+[debug] [2024-09-18T17:31:57.099Z] Web / API server started at ::1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at ::1:4000\n"}}
+[debug] [2024-09-18T17:31:57.177Z] >>> [apiv2][query] PUT http://127.0.0.1:9000/.settings/rules.json ns=moco-wasp-default-rtdb
+[debug] [2024-09-18T17:31:57.177Z] >>> [apiv2][body] PUT http://127.0.0.1:9000/.settings/rules.json "{\n  \"rules\": {\n    \".read\": \"now < 1727560800000\",  // 2024-9-29\n    \".write\": \"now < 1727560800000\",  // 2024-9-29\n  }\n}"
+[debug] [2024-09-18T17:31:57.499Z] 19:31:57.499 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO com.firebase.core.namespace.NamespaceActor - moco-wasp-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 147ms, init: 0ms
+ {"metadata":{"emulator":{"name":"database"},"message":"19:31:57.499 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO com.firebase.core.namespace.NamespaceActor - moco-wasp-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 147ms, init: 0ms\n"}}
+[debug] [2024-09-18T17:31:57.598Z] 19:31:57.598 [NamespaceSystem-blocking-namespace-operation-dispatcher-6] INFO com.firebase.core.namespace.StateManager - Namespace moco-wasp-default-rtdb status Active to Active
+ {"metadata":{"emulator":{"name":"database"},"message":"19:31:57.598 [NamespaceSystem-blocking-namespace-operation-dispatcher-6] INFO com.firebase.core.namespace.StateManager - Namespace moco-wasp-default-rtdb status Active to Active\n"}}
+[debug] [2024-09-18T17:31:57.627Z] <<< [apiv2][status] PUT http://127.0.0.1:9000/.settings/rules.json 200
+[debug] [2024-09-18T17:31:57.627Z] <<< [apiv2][body] PUT http://127.0.0.1:9000/.settings/rules.json {"status":"ok"}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌──────────┬──────────────┬────────────────────────────────┐
+│ Emulator │ Host:Port    │ View in Emulator UI            │
+├──────────┼──────────────┼────────────────────────────────┤
+│ Database │ 0.0.0.0:9000 │ http://127.0.0.1:4000/database │
+├──────────┼──────────────┼────────────────────────────────┤
+│ Storage  │ 0.0.0.0:9199 │ http://127.0.0.1:4000/storage  │
+└──────────┴──────────────┴────────────────────────────────┘
+  Emulator Hub running at 127.0.0.1:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2024-09-18T17:32:59.471Z] 19:32:59.470 [FirebaseWorkerPool-1-4] WARN com.firebase.core.persistence.backend.dummy.EmulatorMetadataPersistence - Multiple projectIds are not recommended in single project mode. Requested 
+namespace moco-wasp, but the emulator is configured for moco-wasp-default-rtdb. To 
+opt-out of single project mode add/set the singleProjectMode: false property in 
+the firebase.json emulators config. 
+ {"metadata":{"emulator":{"name":"database"},"message":"19:32:59.470 [FirebaseWorkerPool-1-4] WARN com.firebase.core.persistence.backend.dummy.EmulatorMetadataPersistence - Multiple projectIds are not recommended in single project mode. Requested \nnamespace moco-wasp, but the emulator is configured for moco-wasp-default-rtdb. To \nopt-out of single project mode add/set the singleProjectMode: false property in \nthe firebase.json emulators config. \n"}}
+[debug] [2024-09-18T17:32:59.480Z] 19:32:59.480 [NamespaceSystem-akka.actor.default-dispatcher-9] INFO com.firebase.core.namespace.NamespaceActor - moco-wasp successfully activated FBKV (SurveyIdle(0)) wait: 5ms, init: 0ms
+ {"metadata":{"emulator":{"name":"database"},"message":"19:32:59.480 [NamespaceSystem-akka.actor.default-dispatcher-9] INFO com.firebase.core.namespace.NamespaceActor - moco-wasp successfully activated FBKV (SurveyIdle(0)) wait: 5ms, init: 0ms\n"}}
+[debug] [2024-09-18T17:33:07.236Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/moco-wasp/adminSdkConfig [none]
+[debug] [2024-09-18T17:33:07.782Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/moco-wasp/adminSdkConfig 200
+[debug] [2024-09-18T17:33:07.783Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/moco-wasp/adminSdkConfig {"projectId":"moco-wasp","databaseURL":"https://moco-wasp-default-rtdb.europe-west1.firebasedatabase.app","storageBucket":"moco-wasp.appspot.com","locationId":"europe-west"}

@@ -1,0 +1,9 @@
+19:31:55.624 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+19:31:55.826 [main] INFO com.firebase.server.forge.App$ - Listening at 0.0.0.0:9000
+19:31:57.499 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO com.firebase.core.namespace.NamespaceActor - moco-wasp-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 147ms, init: 0ms
+19:31:57.598 [NamespaceSystem-blocking-namespace-operation-dispatcher-6] INFO com.firebase.core.namespace.StateManager - Namespace moco-wasp-default-rtdb status Active to Active
+19:32:59.470 [FirebaseWorkerPool-1-4] WARN com.firebase.core.persistence.backend.dummy.EmulatorMetadataPersistence - Multiple projectIds are not recommended in single project mode. Requested 
+namespace moco-wasp, but the emulator is configured for moco-wasp-default-rtdb. To 
+opt-out of single project mode add/set the singleProjectMode: false property in 
+the firebase.json emulators config. 
+19:32:59.480 [NamespaceSystem-akka.actor.default-dispatcher-9] INFO com.firebase.core.namespace.NamespaceActor - moco-wasp successfully activated FBKV (SurveyIdle(0)) wait: 5ms, init: 0ms
