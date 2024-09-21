@@ -1,5 +1,9 @@
 # MOCO WASP Projekt Freundschaft über Distanz
-![logo](https://github.com/DrProNoob/MOCO-Wasp/blob/main/gitAsstets/image.png)
+
+<p align="center">
+  <img src="https://github.com/DrProNoob/MOCO-Wasp/blob/main/gitAsstets/image.png" alt="Logo" width="300" />
+</p>
+
 Unsere App soll Nutzern helfen, Freundschaften über Distanz zu pflegen und zu vertiefen. Dazu bietet die App die Möglichkeit, sich mit Freunden über einen Chat auszutauschen. Die Hauptkomponente der App besteht darin, dass sie den Freunden jeweils Challenges stellt, die zu mehr Austausch zwischen ihnen führen sollen. Außerdem möchten wir mit der App Freunde dazu anregen, neue Erfahrungen miteinander zu machen und Erinnerungen zu schaffen. Das Ziel der App ist aber auch, nicht nur Funktionalität zu bieten, sondern auch für uns als Entwickler Erfahrungen im Bereich Kotlin Multiplatform-Entwicklung zu sammeln.
 
 Der Hauptscreen der App zeigt dem Nutzer, was er selbst und sein Freund/ seine Freundin gepostet haben. Die Posts der Nutzer können Bilder sein oder das Ergebnis von erledigten Challenges. Auf dem Hauptscreen hat man auch die Möglichkeit, eine zufällige Challenge zu starten.
