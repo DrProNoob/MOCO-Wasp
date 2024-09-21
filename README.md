@@ -42,7 +42,7 @@ Die App-Architektur basiert auf der Model-View-ViewModel-Architektur. Wir haben 
 
 ## Was tun um die App zum laufen zu bringen
 > **Warnung**
-> Du benötigst einen Mac mit macOS, um iOS-spezifischen Code auf simulierten oder realen Geräten zu schreiben und auszuführen oder [Docker OSX](https://github.com/sickcodes/Docker-OSX)
+> Du benötigst einen Mac mit macOS, um iOS-spezifischen Code auf simulierten oder realen Geräten zu schreiben und auszuführen oder [Docker OSX](https://github.com/sickcodes/Docker-OSX).
 > Dies ist eine Vorgabe von Apple.
 
 Du brauchst folgendes:
