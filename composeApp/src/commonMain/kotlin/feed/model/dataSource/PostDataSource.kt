@@ -24,9 +24,14 @@ class PostDataSource(
     private val dbRef = firebaseDatabase.reference()
 
     suspend fun putPost(post: PostDTO, serializersModule: SerializersModule) {
-       dbRef.child("posts").push().setValue(post) {
-            encodeDefaults = true
-            this.serializersModule = serializersModule
+        try {
+            dbRef.child("posts").push().setValue(post) {
+                encodeDefaults = true
+                this.serializersModule = serializersModule
+            }
+            println("Post added")
+        } catch (e: Exception) {
+            println("Error adding post: ${e.message}")
         }
     }
 

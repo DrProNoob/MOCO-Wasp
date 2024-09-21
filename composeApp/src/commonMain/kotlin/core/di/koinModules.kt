@@ -12,17 +12,21 @@ import dev.gitlive.firebase.storage.storage
 import feed.view.FeedViewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
+
 import org.koin.dsl.module
 
 val sharedModule = module {
+    val local = "10.0.2.2"
+    val host = "192.168.178.20"
+
     single {
         Firebase.storage.apply {
-            useEmulator(host = "192.168.178.20", port = 9199)
+            useEmulator(host = local, port = 9199)
         }
     }
     single {
         Firebase.database.apply {
-            useEmulator(host = "192.168.178.20", port = 9000)
+            useEmulator(host = local, port = 9000)
         }
     }
     singleOf(::ChallengeRepo)
