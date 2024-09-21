@@ -36,21 +36,38 @@ Die App-Architektur basiert auf der Model-View-ViewModel-Architektur. Wir haben 
 |  Kamel Async Image Loading   | Kamel-Media/Kamel|
 
 ## Was tun um die App zum laufen zu bringen
-> **warnung**
->Du benötigst einen Mac mit macOS, um iOS-spezifischen Code auf simulierten oder realen Geräten zu schreiben und auszuführen.
->Dies ist eine Vorgabe von Apple.
+> **Warnung**
+> Du benötigst einen Mac mit macOS, um iOS-spezifischen Code auf simulierten oder realen Geräten zu schreiben und auszuführen oder [Docker OSX](https://github.com/sickcodes/Docker-OSX)
+> Dies ist eine Vorgabe von Apple.
 
 Du brauchst folgendes:
 
 * Ein Rechner mit einer aktuellen Version von macOS (IOS)
 * [Xcode](https://apps.apple.com/us/app/xcode/id497799835) (IOS)
 * [Android Studio](https://developer.android.com/studio)
-* The [Kotlin Multiplatform Mobile plugin](https://plugins.jetbrains.com/plugin/14936-kotlin-multiplatform-mobile)
-* [Firebase Emulator] (https://firebase.google.com/docs/emulator-suite) Die passenden Dateien sind dafür im Firebase Ordner
+* Das [Kotlin Multiplatform Mobile plugin](https://plugins.jetbrains.com/plugin/14936-kotlin-multiplatform-mobile)
+* [Firebase Emulator](https://firebase.google.com/docs/emulator-suite) Die passenden Dateien sind dafür im Firebase Ordner
 
 ### Um die App zu testen:
 #### Firebase Emulator Starten
 In der Weboberfläche im Realtime Database User nach folgendem Schema anlegen:
+![UserSchema](https://github.com/DrProNoob/MOCO-Wasp/blob/main/gitAsstets/userSchema.png)
+
+#### Auf Android
+Um deine Anwendung auf einem Android-Emulator auszuführen:
+
+1. Stelle sicher, dass du ein Android Virtual Device (AVD) zur Verfügung hast. Andernfalls kannst du eines erstellen.
+2. Wähle in der Liste der Ausführungskonfigurationen androidApp aus.
+3. Wähle dein virtuelles Gerät und klicke auf **Ausführen**.
+
+#### Auf IOS
+##### Ausführung auf einem Simulator (Foto Funktion geht nicht)
+Um deine Anwendung in Android Studio auf einem iOS-Simulator auszuführen, bearbeite die iosApp-Ausführungskonfiguration:
+
+Wähle in der Liste run configurations, wähle **Edit Configurations**::
+Navigiere zu **iOS Application** | **iosApp**.
+Wähle in der Liste Ausführungsziel dein Zielgerät aus. Klicke auf OK:
+Die iosApp-Ausführungskonfiguration ist nun verfügbar. Klicke neben deinem virtuellen Gerät auf Ausführen.
 
 
 
