@@ -29,10 +29,30 @@ Die App-Architektur basiert auf der Model-View-ViewModel-Architektur. Wir haben 
 ## Externe Libaries
 |      Verwendet     |     Quelle   |
 | ------------- | ------------- |
-|  Koin DI  |    inserKoinIo/Koib   |
+|  Koin DI  |    inserKoinIo/Koin   |
 |  Firebase  | Gitlife Firebase |
 |  Permission   | calf/Permission |
 |  Http Client  | Ktor  |
 |  Kamel Async Image Loading   | Kamel-Media/Kamel|
 
 ## Was tun um die App zum laufen zu bringen
+> **warnung**
+>Du benötigst einen Mac mit macOS, um iOS-spezifischen Code auf simulierten oder realen Geräten zu schreiben und auszuführen.
+>Dies ist eine Vorgabe von Apple.
+
+Du brauchst folgendes:
+
+* Ein Rechner mit einer aktuellen Version von macOS (IOS)
+* [Xcode](https://apps.apple.com/us/app/xcode/id497799835) (IOS)
+* [Android Studio](https://developer.android.com/studio)
+* The [Kotlin Multiplatform Mobile plugin](https://plugins.jetbrains.com/plugin/14936-kotlin-multiplatform-mobile)
+* [Firebase Emulator] (https://firebase.google.com/docs/emulator-suite) Die passenden Dateien sind dafür im Firebase Ordner
+
+### Um die App zu testen:
+#### Firebase Emulator Starten
+In der Weboberfläche im Realtime Database User nach folgendem Schema anlegen:
+
+
+
+
+
