@@ -51,6 +51,7 @@ Du brauchst folgendes:
 ### Um die App zu testen:
 #### Firebase Emulator Starten
 In der Weboberfläche im Realtime Database User nach folgendem Schema anlegen:
+
 ![UserSchema](https://github.com/DrProNoob/MOCO-Wasp/blob/main/gitAsstets/userSchema.png)
 
 #### Auf Android
@@ -61,7 +62,7 @@ Um deine Anwendung auf einem Android-Emulator auszuführen:
 3. Wähle dein virtuelles Gerät und klicke auf **Ausführen**.
 
 #### Auf IOS
-##### Ausführung auf einem Simulator (Foto Funktion geht nicht)
+##### Ausführung auf einem Simulator: (Foto Funktion geht nicht)
 Um deine Anwendung in Android Studio auf einem iOS-Simulator auszuführen, bearbeite die iosApp-Ausführungskonfiguration:
 
 Wähle in der Liste run configurations, wähle **Edit Configurations**::
@@ -69,7 +70,11 @@ Navigiere zu **iOS Application** | **iosApp**.
 Wähle in der Liste Ausführungsziel dein Zielgerät aus. Klicke auf OK:
 Die iosApp-Ausführungskonfiguration ist nun verfügbar. Klicke neben deinem virtuellen Gerät auf Ausführen.
 
+#### Ausführung auf einem echten Gerät:
+Dazu benötigst du Folgendes:
 
+* Die `TEAM_ID` das ist deine Apple ID
+* Das IOS Gerät muss in Xcode verfügbar sein.
 
 
 
