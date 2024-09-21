@@ -1,4 +1,4 @@
-# MOCO WASP Projekt Freundschaft über Distanz
+# MOCO WASP Projekt Freundschaft über Distanz V1
 
 <p align="center">
   <img src="https://github.com/DrProNoob/MOCO-Wasp/blob/main/gitAsstets/image.png" alt="Logo" width="300" />
