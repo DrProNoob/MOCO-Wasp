@@ -12,6 +12,7 @@ import core.model.repo.UserRepository
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.database.FirebaseDatabase
 import dev.gitlive.firebase.database.database
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,33 +36,46 @@ class ChatViewModel(val navController: NavController,userRepository: UserReposit
 
     private val _user = MutableStateFlow<User?>(null)
     val user = _user.asStateFlow()
-    //val user:User = userRepository.getOwnUser()
-    //val chat = ChatRoom(listOf(1,2),1)
+
+    //charRoomState wird momentan nicht richtig gesetzt
     val _chatRoomState = MutableStateFlow(ChatRoomState())
     val chatRoomState: StateFlow<ChatRoomState> = _chatRoomState.asStateFlow()
 
     private val _messagesState = MutableStateFlow(MessagesState())
     val messagesState: StateFlow<MessagesState> = _messagesState.asStateFlow()
 
-    var chatRoomId :String = ""
+    var chatRoomId :String? = ""
+
     init {
         viewModelScope.launch {
-/*            //chatRepository.setupUsers()
-           // chatRepository.setupChatRoom()
+            //chatRepository.setupUsers()
+ /*          // chatRepository.setupChatRoom()
             val user = userRepository.getOwnUser()
             _user.update {user}
             _chatRoomState.update { it.copy(chatRoom = ChatRoom(2,2,3)) }
             chatRepository.getAllMessagesFromChatRoomId(chatRoomId).collect{ messageList ->
                 _messagesState.update { it.copy(messages = messageList) }*/
+
             val user = userRepository.getOwnUser()
             _user.update { user }
             val remoteUser = userRepository.getRemoteUser()
-            val chatRoom = user?.let { remoteUser?.let { it1 -> ChatRoom(it.userId, it1.userId, 1) } }
-            chatRoomId = chatRepository.saveChatRoom(chatRoom!!)
-            log.i{"chatRoomId = $chatRoomId"}
-            //saveMessage(Message( "", chatRoomId, user.userId,1L))
-            chatRepository.getAllMessagesFromChatRoomId(chatRoomId).collect { messageList ->
-                _messagesState.update { it.copy(messages = messageList) }
+            val chatRoomWithRemoteUser =  chatRepository.getChatRoomByUserId(remoteUser!!.userId,user!!.userId)
+            log.i{"chatRoomWithRemoteUser = $chatRoomWithRemoteUser"}
+            if(chatRoomWithRemoteUser == null){
+                val chatRoom = user.let { remoteUser.let { it1 -> ChatRoom(it.userId, it1.userId, 1) } }
+                chatRoomId = chatRepository.saveChatRoom(chatRoom)
+                log.i{"chatRoomId = $chatRoomId"}
+                //saveMessage(Message( "", chatRoomId, user.userId,1L))
+                chatRepository.getAllMessagesFromChatRoomId(chatRoomId!!).collect { messageList ->
+                    _messagesState.update { it.copy(messages = messageList) }
+                }
+            }else{
+                chatRoomId =  chatRepository.getCurrentChatRoomId(chatRoomWithRemoteUser)
+                chatRoomId?.let {
+                    chatRepository.getAllMessagesFromChatRoomId(it).collect { messageList ->
+                        _messagesState.update { it.copy(messages = messageList) }
+                    }
+                }
             }
             log.i{"chatRoomId = $chatRoomId"}
         }
@@ -73,13 +87,13 @@ class ChatViewModel(val navController: NavController,userRepository: UserReposit
     fun onEvent(event: ChatEvent){
         when(event){
             is ChatEvent.SaveMessage ->{
-                saveMessage(Message( event.messageText, chatRoomId, user.value!!.userId,1L))
+                saveMessage(Message( event.messageText, chatRoomId!!, user.value!!.userId,1L))
             }
             is ChatEvent.SaveChatRoom ->{
                 saveChatRoom(event.chatRoom)
             }
             is ChatEvent.GetChatRoom ->{
-                getChatRoomId(chatRoomId)
+                getChatRoomByUserId(user.value!!.userId,1)
             }
 
         }
@@ -96,14 +110,17 @@ class ChatViewModel(val navController: NavController,userRepository: UserReposit
         viewModelScope.launch {
             chatRepository.saveMessage(message)
             _messagesState.update {
-                it.copy(messages = chatRepository.getAllMessagesFromChatRoomId(chatRoomId).first())
+                it.copy(messages = chatRepository.getAllMessagesFromChatRoomId(chatRoomId!!).first())
             }
         }
     }
-    fun getChatRoomId(chatRoomId: String) {
+    fun getChatRoomByUserId(remoteUserId: Int,ownUserId :Int):ChatRoom? {
+        var result: ChatRoom? = null
         viewModelScope.launch{
-            _chatRoomState.update { it.copy(chatRoom = chatRepository.getCurrentChatRoom(chatRoomId)) }
+            result =  chatRepository.getChatRoomByUserId(remoteUserId,ownUserId)
+            _chatRoomState.update { it.copy(chatRoom = result) }
         }
+        return result
     }
 
 }

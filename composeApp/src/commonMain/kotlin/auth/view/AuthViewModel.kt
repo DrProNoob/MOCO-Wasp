@@ -3,6 +3,7 @@ package auth.view
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import chat.model.ChatRepository
 import core.entity.User
 import core.model.repo.UserRepository
 import dev.gitlive.firebase.database.FirebaseDatabase
