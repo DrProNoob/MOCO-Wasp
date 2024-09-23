@@ -61,21 +61,37 @@ class ChatRepository(
             }
         return result
     }
-    suspend fun getCurrentChatRoom(chatRoomId: String):ChatRoom?{
-        val path = dbRef.child("chatRooms").child(chatRoomId).key
-        log.i { "path = $path" }
-        val result = dbRef.child("chatRooms").child(chatRoomId)
-            .valueEvents
-            .onEach { dataSnapshot ->
-                log.i { "DataSnapshot = ${dataSnapshot.value}" }
+    suspend fun getChatRoomByUserId(remoteUserId: Int, ownUserId :Int):ChatRoom?{
+        val result = dbRef.child("chatRooms").valueEvents.mapNotNull { dataSnapshot ->
+            dataSnapshot.children.map { chatRoom ->
+                chatRoom.value(ChatRoom.serializer())
             }
-            .mapNotNull { dataSnapshot ->
-                dataSnapshot.value(ChatRoom.serializer())
-            }
-            .firstOrNull()
-        log.i { "teilErgebnis = $result" }
-
+        }.first().find { chatRoom ->
+            chatRoom.ownUser == remoteUserId && chatRoom.remoteUser == ownUserId
+        }
+        log.i { "ChatRoom = $result" }
         return result
     }
 
+//    fun getCurrentChatRoomId1(chatRoom: ChatRoom):String?{
+//        var chatRoomId: String? = ""
+//        val path = dbRef.child("chatRooms").valueEvents.mapNotNull { dataSnapshot ->
+//            dataSnapshot.children.map { cchatRoom ->
+//                val fetchedChatRoom = cchatRoom.value(ChatRoom.serializer())
+//                if (fetchedChatRoom == chatRoom) {
+//                    chatRoomId = cchatRoom.key
+//                }
+//            }
+//        }
+//        return chatRoomId
+//    }
+
+    suspend fun getCurrentChatRoomId(chatRoom: ChatRoom): String? {
+        return dbRef.child("chatRooms").valueEvents.mapNotNull { dataSnapshot ->
+            dataSnapshot.children.find { child ->
+                val fetchedChatRoom = child.value(ChatRoom.serializer())
+                fetchedChatRoom == chatRoom
+            }?.key
+        }.first() // Collect the first matching result
+    }
 }
