@@ -12,31 +12,35 @@ class IOSStepCounter():StepCounter {
     var healthStore :HKHealthStore? = null
 
     override suspend fun startCounting() {
-        if(HKsHealthStore.isHealthDataAvailable()){
-            healthStore = HKsHealthStore()
+        if(HKHealthStore.isHealthDataAvailable()){
+            healthStore = HKHealthStore()
             val stepType = HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount)
             requestHealthAuthorization(healthStore!!) { success ->
                 if (success) {
                     // 2. Autorisierung erfolgreich, jetzt Schritte abfragen
                     val now = NSDate()
                     val startOfDay = NSCalendar.currentCalendar.startOfDayForDate(now)
-                    val predicate = HKQuery.predicateForSamplesWithStartDate(startOfDay, endDate = now, options = 0)
+                    val predicate = HKQuery.predicateForSamplesWithStartDate(startOfDay, endDate = now, options = 0u)
 
-                    val query = HKStatisticsQuery(
-                        quantityType = stepType,
-                        quantitySamplePredicate = predicate,
-                        options = HKStatisticsOptionCumulativeSum
-                    ) { _, result, error ->
-                        if (error != null) {
-                            // Fehlerbehandlung, wenn die Abfrage fehlschlägt
-                            log.i{"Error fetching steps: ${error.localizedDescription}"}
-                        } else {
-                            val sumQuantity = result?.sumQuantity()
-                            steps = sumQuantity?.doubleValueForUnit(HKUnit.count())?.toInt() ?: 0
+                    val query = stepType?.let {
+                        HKStatisticsQuery(
+                            quantityType = it,
+                            quantitySamplePredicate = predicate,
+                            options = HKStatisticsOptionCumulativeSum
+                        ) { _, result, error ->
+                            if (error != null) {
+                                // Fehlerbehandlung, wenn die Abfrage fehlschlägt
+                                log.i{"Error fetching steps: ${error.localizedDescription}"}
+                            } else {
+                                val sumQuantity = result?.sumQuantity()
+                                steps = sumQuantity?.doubleValueForUnit(HKUnit.countUnit())?.toInt() ?: 0
+                            }
                         }
                     }
                     // 3. Führe die Abfrage aus
-                    healthStore!!.executeQuery(query)
+                    if (query != null) {
+                        healthStore!!.executeQuery(query)
+                    }
                 } else {
                     // Autorisierung fehlgeschlagen
                     log.i{"Authorization failed"}
