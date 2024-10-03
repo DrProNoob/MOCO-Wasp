@@ -9,7 +9,7 @@ class IOSStepCounter():StepCounter {
         val log = logging()
     }
     private var steps: Int = 0
-    val healthStore :HKHealthStore? = null
+    var healthStore :HKHealthStore? = null
 
     override suspend fun startCounting() {
         if(HKsHealthStore.isHealthDataAvailable()){
