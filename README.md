@@ -59,7 +59,7 @@ Du brauchst folgendes:
 #### Firebase Emulator Starten
 In der Weboberfläche im Realtime Database User nach folgendem Schema anlegen:
 
-![UserSchema](https://github.com/DrProNoob/MOCO-Wasp/blob/main/gitAsstets/userSchema.png)
+![UserSchema](https://github.com/DrProNoob/MOCO-Wasp/blob/main/gitAsstets/schema.png)
 
 #### Auf Android
 Um deine Anwendung auf einem Android-Emulator auszuführen:
