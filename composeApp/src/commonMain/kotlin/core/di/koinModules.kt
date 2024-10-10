@@ -21,12 +21,12 @@ val sharedModule = module {
 
     single {
         Firebase.storage.apply {
-            useEmulator(host = local, port = 9199)
+            useEmulator(local, 9199)
         }
     }
     single {
         Firebase.database.apply {
-            useEmulator(host = local, port = 9000)
+            useEmulator(local, 9000)
         }
     }
     singleOf(::ChallengeRepo)

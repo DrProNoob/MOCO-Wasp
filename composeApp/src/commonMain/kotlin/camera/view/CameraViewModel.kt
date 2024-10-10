@@ -26,13 +26,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.lighthousegames.logging.logging
 import kotlin.random.Random
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-class CameraViewModel (val userRepository: UserRepository,val navController: NavController,imageDbStorage: FirebaseStorage,firebaseDatabase: FirebaseDatabase):ViewModel() {
+class CameraViewModel (val userRepository: UserRepository,
+                       val navController: NavController,
+                       imageDbStorage: FirebaseStorage,
+                       firebaseDatabase: FirebaseDatabase):ViewModel() {
 
 
+    val log = logging()
 
     val userImageDatabase = firebaseDatabase
     val realtimeDatabase = userImageDatabase.reference()
@@ -108,7 +113,9 @@ class CameraViewModel (val userRepository: UserRepository,val navController: Nav
                     }
                     val url = uploadImage(imageStateByteArray.value!!)
                     val ownUser = userRepository.getOwnUser()
+                    log.i { "UserID $ownUser" }
                     val post = ownUser?.let { PostDTO(userid = it.userId, title = title, description = description, content = CameraImageContent(imageUrl = url)) }
+                    log.i { "post $post" }
                     if (post != null) {
                         postDataSource.putPost(post, imageModule)
                     }

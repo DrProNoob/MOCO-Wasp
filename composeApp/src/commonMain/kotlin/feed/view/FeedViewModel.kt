@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -36,6 +37,14 @@ class FeedViewModel(val userRepository: UserRepository,val navController: NavCon
     val challengeState = _challengeState.asStateFlow()
 
     private val _posts = postDataSource.getAllPosts()
+
+    fun reloadPosts() {
+        viewModelScope.launch {
+            _state.value = _state.value.copy(isLoading = true)
+            val posts = postDataSource.getAllPosts().first()
+            _state.value = _state.value.copy(posts = posts, isLoading = false)
+        }
+    }
 
 
 
