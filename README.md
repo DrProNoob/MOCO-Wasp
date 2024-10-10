@@ -17,6 +17,8 @@ Bei den Challenges gibt es die Chat-Challenge, die einen dazu auffordert, mit ei
 
 ## Video Demo
 
+https://github.com/user-attachments/assets/6bd3011b-4657-4b93-b8d9-35cbb5195056
+
 ## Welche Probleme gab es?
 Das erste Problem, das wir hatten, war die Frage, wie wir die Ordnerstruktur effizient und sauber organisieren. Wir haben uns für eine feature-basierte Paketstruktur entschieden, die unseren Anforderungen entspricht. Die Features haben wir in separaten Branches entwickelt und anschließend problemlos in den Main-Branch gemerged.
 
