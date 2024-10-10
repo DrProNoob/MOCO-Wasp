@@ -14,19 +14,21 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 
 import org.koin.dsl.module
+import steps.domain.view.StepCounter
+import steps.domain.view.StepViewModel
 
 val sharedModule = module {
     val local = "10.0.2.2"
-    val host = "192.168.178.20"
+    val hostD = "192.168.178.20"
 
     single {
         Firebase.storage.apply {
-            useEmulator(local, 9199)
+            useEmulator(hostD, 9199)
         }
     }
     single {
         Firebase.database.apply {
-            useEmulator(local, 9000)
+            useEmulator(hostD, 9000)
         }
     }
     singleOf(::ChallengeRepo)
@@ -36,7 +38,5 @@ val sharedModule = module {
     viewModelOf(::ChatViewModel)
     viewModelOf(::CameraViewModel)
     viewModelOf(::FeedViewModel)
+    viewModelOf(::StepViewModel)
 }
-
-
-

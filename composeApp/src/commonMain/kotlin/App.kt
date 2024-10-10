@@ -1,3 +1,4 @@
+
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.navigation.compose.NavHost
@@ -19,6 +20,9 @@ import org.koin.compose.KoinContext
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parametersOf
+import steps.domain.view.StepScreen
+import steps.domain.view.StepViewModel
+import steps.domain.view.createStepCounter
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
@@ -48,6 +52,12 @@ fun App() {
                     val cameraViewModel = koinViewModel<CameraViewModel>(){
                         parametersOf(navigation) }
                     CameraMainView(cameraViewModel)
+                }
+                composable("step"){
+                    val stepViewModel = koinViewModel<StepViewModel>(){
+                        parametersOf(createStepCounter())
+                    }
+                    StepScreen(stepViewModel)
                 }
             }
         }

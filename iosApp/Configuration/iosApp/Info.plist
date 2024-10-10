@@ -6,6 +6,10 @@
     <string>Camera permission is required to take pictures</string>
     <key>Privacy - Camera Usage Description</key>
     <string>This app uses camera for capturing photos.</string>
+    <key>NSHealthShareUsageDescription</key>
+        <string>Diese App benötigt Zugriff auf deine Gesundheitsdaten.</string>
+        <key>NSHealthUpdateUsageDescription</key>
+        <string>Diese App möchte deine Gesundheitsdaten aktualisieren.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
