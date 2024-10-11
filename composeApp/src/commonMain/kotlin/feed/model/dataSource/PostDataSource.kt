@@ -16,6 +16,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import org.lighthousegames.logging.logging
+import steps.domain.model.stepModule
 import kotlin.math.log
 
 class PostDataSource(
@@ -40,7 +41,11 @@ class PostDataSource(
         dbRef.child("posts").valueEvents.mapNotNull { dataSnapshot ->
             dataSnapshot.children.map { post ->
                 val postDTO = post.value(PostDTO.serializer()) {
-                    serializersModule = imageModule
+                    if(post.value.toString().contains("CameraImageContent")){
+                        serializersModule = imageModule
+                    } else if(post.value.toString().contains("StepChallengeContent") ){
+                        serializersModule = stepModule
+                    }
                 }
                 postDTO.mapToPost()
             }.toList()

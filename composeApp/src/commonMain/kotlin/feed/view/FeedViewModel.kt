@@ -18,9 +18,13 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.lighthousegames.logging.logging
 
 class FeedViewModel(val userRepository: UserRepository,val navController: NavController,val challengeRepo: ChallengeRepo, firebaseDatabase: FirebaseDatabase) : ViewModel() {
 
+    companion object {
+        val log = logging()
+    }
 
     val host = "192.168.178.20"
     val port = 9199
@@ -69,7 +73,14 @@ class FeedViewModel(val userRepository: UserRepository,val navController: NavCon
         when (challengeType) {
             ChallengeType.CHAT -> startChatChallenge(navController, challenge, userRepository)
             ChallengeType.PHOTO -> navController.navigate("camera")
+            ChallengeType.STEPS -> startStepChallenge(navController, challenge, userRepository)
         }
+    }
+
+    private fun startStepChallenge(navController: NavController, challenge: Challenge, userRepository: UserRepository) {
+        val stepGoal = Regex("\\d+").find(challenge.challengeAction)!!.value.toInt()
+        log.i { "Step goal: $stepGoal" }
+        navController.navigate("step?goal=$stepGoal")
     }
 
     private fun startChatChallenge(navController: NavController, challenge: Challenge, userRepository: UserRepository) {

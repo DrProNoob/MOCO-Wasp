@@ -47,6 +47,7 @@ import mocowasp.composeapp.generated.resources.shuffle
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import steps.domain.model.StepChallengeContent
 import kotlin.random.Random
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalMaterial3Api::class)
@@ -147,9 +148,17 @@ fun ImageFeedContent(content: CameraImageContent) {
 }
 
 @Composable
+fun StepChallengeContent(content: StepChallengeContent) {
+    Text(text = "Person ist  ${content.steps} schritte gelaufen gelaufen")
+}
+
+@Composable
 fun checkContent(content: AbstractContent, post: Post) {
     if (content is CameraImageContent) {
         ImageFeedContent(post.content as CameraImageContent)
+    }
+    else if(content is StepChallengeContent){
+        StepChallengeContent(post.content as StepChallengeContent)
     }
 }
 

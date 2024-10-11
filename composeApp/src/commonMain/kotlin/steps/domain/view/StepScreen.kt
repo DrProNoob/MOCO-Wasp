@@ -19,12 +19,15 @@ import steps.domain.model.StepEvent
 
 
 @Composable
-fun StepScreen(viewModel: StepViewModel) {
+fun StepScreen(viewModel: StepViewModel, stepGoal: Int) {
     val count = viewModel.counterState.collectAsStateWithLifecycle()
     val onEvent = viewModel::onEvent
+    val navController = viewModel.navController
+
 
     Column {
-        Button(onClick = { onEvent(StepEvent.StartCounting) }) {
+
+        Button(onClick = { onEvent(StepEvent.StartCounting(stepGoal)) }) {
             Text("Starte zu zählen")
         }
         Spacer(modifier = Modifier.width(16.dp))
@@ -33,7 +36,7 @@ fun StepScreen(viewModel: StepViewModel) {
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text("Gemachte schritte: ${count.value}")
-        Text("Ziel: 3000")
+        Text("Ziel: $stepGoal")
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = { onEvent(StepEvent.StepsCounted) }) {
             Text("Lade Schritte")

@@ -53,11 +53,13 @@ fun App() {
                         parametersOf(navigation) }
                     CameraMainView(cameraViewModel)
                 }
-                composable("step"){
+                composable("step?goal={goal}"){
+                        backStackEntry ->
+                    val stepGoal = backStackEntry.arguments?.getString("goal")?.toIntOrNull() ?: 0
                     val stepViewModel = koinViewModel<StepViewModel>(){
-                        parametersOf(createStepCounter())
+                        parametersOf(createStepCounter(), navigation)
                     }
-                    StepScreen(stepViewModel)
+                    StepScreen(stepViewModel,stepGoal)
                 }
             }
         }

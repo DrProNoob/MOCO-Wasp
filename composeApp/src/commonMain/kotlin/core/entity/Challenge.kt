@@ -8,5 +8,6 @@ data class Challenge(
 
 enum class ChallengeType {
     CHAT,
-    PHOTO
+    PHOTO,
+    STEPS
 }

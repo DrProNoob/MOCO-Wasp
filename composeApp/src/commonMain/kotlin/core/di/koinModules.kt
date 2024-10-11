@@ -19,7 +19,7 @@ import steps.domain.view.StepViewModel
 
 val sharedModule = module {
     val local = "10.0.2.2"
-    val hostD = "192.168.178.20"
+    val hostD = "192.168.178.30"
 
     single {
         Firebase.storage.apply {

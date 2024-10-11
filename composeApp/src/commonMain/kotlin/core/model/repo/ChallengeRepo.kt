@@ -11,6 +11,11 @@ class ChallengeRepo(val userRepository: UserRepository) {
     )
 
     private var chatChallenge = emptyList<Challenge>()
+    private val stepChallenges = listOf(
+        Challenge("Walk 10 steps", ChallengeType.STEPS),
+        Challenge("Walk 20 steps", ChallengeType.STEPS),
+        Challenge("Walk 30 steps", ChallengeType.STEPS)
+    )
 
 
 
@@ -20,7 +25,7 @@ class ChallengeRepo(val userRepository: UserRepository) {
         allUsers.forEach { user ->
             chatChallenge += Challenge("Chat with ${user.userName}", ChallengeType.CHAT)
         }
-        val allChallenges = photoChallenges + chatChallenge
+        val allChallenges = photoChallenges + chatChallenge + stepChallenges
             return allChallenges
     }
 
