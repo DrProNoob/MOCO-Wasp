@@ -20,7 +20,7 @@ import steps.domain.model.stepModule
 import kotlin.math.log
 
 class PostDataSource(
-    private val firebaseDatabase: FirebaseDatabase
+    firebaseDatabase: FirebaseDatabase
 ) {
 
     private val dbRef = firebaseDatabase.reference()

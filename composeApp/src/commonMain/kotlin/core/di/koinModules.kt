@@ -22,14 +22,10 @@ val sharedModule = module {
     val hostD = "192.168.178.30"
 
     single {
-        Firebase.storage.apply {
-            useEmulator(hostD, 9199)
-        }
+        Firebase.storage
     }
     single {
-        Firebase.database.apply {
-            useEmulator(hostD, 9000)
-        }
+        Firebase.database
     }
     singleOf(::ChallengeRepo)
     singleOf(::UserRepository)
