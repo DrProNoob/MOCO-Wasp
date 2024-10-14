@@ -22,11 +22,14 @@ import dev.gitlive.firebase.storage.storage
 import feed.model.dataSource.PostDataSource
 
 import feed.model.dtos.PostDTO
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.lighthousegames.logging.logging
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.random.Random
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -97,46 +100,70 @@ class CameraViewModel (val userRepository: UserRepository,
             CameraPostEvent.SavePost -> {
                 viewModelScope.launch {
                     if (cameraPostState.value.isLoading) return@launch
-                    _cameraPostState.update {
-                        it.copy(isLoading = true)
-                    }
+
+                    _cameraPostState.update { it.copy(isLoading = true) }
+
                     val title = _cameraPostState.value.title
                     val description = _cameraPostState.value.description
 
-                    if (description != null) {
-                        if (title.isBlank() or description.isBlank()) {
-                            _cameraPostState.update {
-                                it.copy(isLoading = false)
-                            }
-                            return@launch
-                        }
-                    }
-                    val url = uploadImage(imageStateByteArray.value!!)
-                    val ownUser = userRepository.getOwnUser()
-                    log.i { "UserID $ownUser" }
-                    val post = ownUser?.let { PostDTO(userid = it.userId, title = title, description = description, content = CameraImageContent(imageUrl = url)) }
-                    log.i { "post $post" }
-                    if (post != null) {
-                        postDataSource.putPost(post, imageModule)
-                    }
-                    _cameraPostState.update {
-                        it.copy(isLoading = false)
+                    // Check if both title and description are not null and not blank
+                    if (title.isNullOrBlank() || description.isNullOrBlank()) {
+                        _cameraPostState.update { it.copy(isLoading = false) }
+                        return@launch
                     }
 
+                    // Check if image is available before trying to upload
+                    val imageByteArray = imageStateByteArray.value
+                    if (imageByteArray == null) {
+                        log.e { "Image data is null, cannot proceed with upload." }
+                        _cameraPostState.update { it.copy(isLoading = false) }
+                        return@launch
+                    }
+
+                    try {
+                        withContext(NonCancellable) {
+                            val url = uploadImage(imageByteArray)
+                            val ownUser = userRepository.getOwnUser()
+
+                            log.i { "UserID: $ownUser" }
+
+                            val post = ownUser?.let {
+                                PostDTO(
+                                    userid = it.userId,
+                                    title = title,
+                                    description = description,
+                                    content = CameraImageContent(imageUrl = url)
+                                )
+                            }
+
+                            log.i { "Post: $post" }
+
+                            if (post != null) {
+                                postDataSource.putPost(post, imageModule)
+                            }
+                        }
+                    } catch (e: CancellationException) {
+                        log.w { "Operation was cancelled: ${e.message}" }
+                        // Handle coroutine cancellation gracefully if needed
+                    } catch (e: Exception) {
+                        log.e { "Failed to save post: ${e.message}" }
+                    } finally {
+                        _cameraPostState.update { it.copy(isLoading = false) }
+                    }
                 }
             }
+
             is CameraPostEvent.SetDescription -> {
-                _cameraPostState.update {
-                    it.copy(description = event.description)
-                }
+                _cameraPostState.update { it.copy(description = event.description) }
             }
+
             is CameraPostEvent.SetTitle -> {
-                _cameraPostState.update {
-                    it.copy(title = event.title)
-                }
+                _cameraPostState.update { it.copy(title = event.title) }
             }
         }
     }
+
+
 
 
 
