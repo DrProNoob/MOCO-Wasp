@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "859200320525",
+    "firebase_url": "https://moco-wasp-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "moco-wasp",
     "storage_bucket": "moco-wasp.appspot.com"
   },

@@ -19,7 +19,7 @@ import org.lighthousegames.logging.logging
 import kotlin.math.log
 
 class PostDataSource(
-    private val firebaseDatabase: FirebaseDatabase
+    firebaseDatabase: FirebaseDatabase
 ) {
 
     private val dbRef = firebaseDatabase.reference()
